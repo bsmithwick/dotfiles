@@ -67,9 +67,6 @@ nnoremap <leader><space> :nohlsearch<cr>
 "Start scrolling when we're 8 lines away from margins
 set scrolloff=8
 
-"Fugitive statusline
-set statusline=%{fugitive#statusline()}
-
 " HARDCORE -- disable arrow keys in insert mode
 nnoremap <up> <nop>
 nnoremap <down> <nop>
