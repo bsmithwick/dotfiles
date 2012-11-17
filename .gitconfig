@@ -1,0 +1,7 @@
+[http]
+	sslVerify = false
+[user]
+	email = brian.smithwick@gmail.com
+	name = Brian Smithwick
+[color]
+	diff = auto
