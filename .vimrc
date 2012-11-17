@@ -9,9 +9,6 @@ set nocompatible
 " Apparently this is good security
 set modelines=0
 
-" Fire up pathogen
-" call pathogen#infect() 
-
 " Get that filetype stuff happening
 filetype on
 filetype plugin on
@@ -64,8 +61,6 @@ nnoremap ; :
 " stupid \ key is hard to hit
 let mapleader = ","
 
-" Toggle NERDTree on/off
-nnoremap <leader>nt :NERDTreeToggle<cr>
 "Clear search with , + space
 nnoremap <leader><space> :nohlsearch<cr> 
 
@@ -86,15 +81,3 @@ inoremap <left> <nop>
 inoremap <right> <nop>
 nnoremap j gj
 nnoremap k gk
-
-" NERDtree stuff
-" autocmd VimEnter * NERDTree
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-" autocmd VimEnter * wincmd p
-
-" " solarized color scheme
-" syntax enable
-" " set background=light
-" set background=dark
-" let g:solarized_termcolors=256
-" colorscheme solarized
