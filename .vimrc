@@ -1,8 +1,13 @@
 """""""""""""""""""""""""""""""
 " What I use
 "
+" Fugitive for package loading
 " vim-airline for status bar
+" vim-bufferline for visualization of open buffers
 " ctrl-p for sublime-style fuzzy file searching
+" NERDtree for file listing
+" YankRing for yank management -- not really hooked up yet
+" Supertab for tab-completion inside command mode
 "
 "
 """""""""""""""""""""""""""""""
@@ -80,6 +85,9 @@ nnoremap ; :
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPMRU'
 
+" Switch between buffers easily
+" TODO I want something like :bswitch or :bs
+
 " LEADER KEY STUFF
 " stupid \ key is hard to hit
 let mapleader = ","
@@ -88,8 +96,7 @@ let mapleader = ","
 nmap <leader>w :w!<cr>
 
 " NERDtree stuff
-" Toggle NERDTree on/off  -- I never use this, so don't bother...
-"nnoremap <leader>nt :NERDTreeToggle<cr>
+nnoremap <leader>nt :NERDTreeToggle<cr>
 "autocmd VimEnter * NERDTree
 "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 "autocmd VimEnter * wincmd p
