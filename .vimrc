@@ -34,6 +34,12 @@ filetype indent on
 " Turn on that syntax highlighting
 syntax on
 
+" Prevent vim from forgetting that we're in a php file
+let php_minlines=500
+
+" Assuming the next line is also a comment hurts more than it helps
+set fo-=ro
+
 " Why is this not a default
 set hidden
 
@@ -44,7 +50,7 @@ set lazyredraw
 set noshowmode
 
 " Enable enhanced command-line completion.
-set wildmenu
+set wildchar=<Tab> wildmenu wildmode=full
 
 " Vim's default split positions are bizarre
 set splitbelow
@@ -83,10 +89,11 @@ nnoremap ; :
 
 " Fire up CtrlP
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPMRU'
+let g:ctrlp_cmd = 'CtrlP'
 
 " Switch between buffers easily
 " TODO I want something like :bswitch or :bs
+map :bs :b#
 
 " LEADER KEY STUFF
 " stupid \ key is hard to hit
