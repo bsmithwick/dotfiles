@@ -1,13 +1,14 @@
 """""""""""""""""""""""""""""""
 " What I use
 "
-" Fugitive for package loading
-" vim-airline for status bar
-" vim-bufferline for visualization of open buffers
-" ctrl-p for sublime-style fuzzy file searching
-" NERDtree for file listing
+" Pathogen for package management (http://www.vim.org/scripts/script.php?script_id=2332)
+" Fugitive for git awesomeness (http://www.vim.org/scripts/script.php?script_id=2975)
+" vim-airline for status bar (https://github.com/bling/vim-airline)
+" vim-bufferline for visualization of open buffers (https://github.com/bling/vim-bufferline)
+" ctrl-p for sublime-style fuzzy file searching (https://kien.github.io/ctrlp.vim/)
+" NERDtree for file listing (https://github.com/scrooloose/nerdtree)
 " YankRing for yank management -- not really hooked up yet
-" Supertab for tab-completion inside command mode
+" Supertab for tab-completion inside command mode (https://github.com/ervandew/supertab)
 "
 "
 """""""""""""""""""""""""""""""
