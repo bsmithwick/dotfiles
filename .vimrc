@@ -1,85 +1,83 @@
 """""""""""""""""""""""""""""""
-" What I use
-"
-" Pathogen for package management (http://www.vim.org/scripts/script.php?script_id=2332)
-" Fugitive for git awesomeness (http://www.vim.org/scripts/script.php?script_id=2975)
-" vim-airline for status bar (https://github.com/bling/vim-airline)
-" vim-bufferline for visualization of open buffers (https://github.com/bling/vim-bufferline)
-" ctrl-p for sublime-style fuzzy file searching (https://kien.github.io/ctrlp.vim/)
-" NERDtree for file listing (https://github.com/scrooloose/nerdtree)
-" YankRing for yank management -- not really hooked up yet
-" Supertab for tab-completion inside command mode (https://github.com/ervandew/supertab)
-"
-"
-"""""""""""""""""""""""""""""""
+" Vundle - package management
 
+" Required for Vundle
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'             " Package management
+Plugin 'tpope/vim-fugitive'               " Git awesomeness
+Plugin 'ctrlpvim/ctrlp.vim'               " Sublime-style fuzzy file searching
+Plugin 'bling/vim-airline'                " Status bar
+Plugin 'bling/vim-bufferline'             " Visualization of open buffers
+Plugin 'scrooloose/nerdtree'              " File explorer
+Plugin 'scrooloose/syntastic'             " Syntax checker
+Plugin 'ervandew/supertab'                " Tab-completion inside command mode
+Plugin 'godlygeek/tabular'                " Required for vim-markdown
+Plugin 'plasticboy/vim-markdown'          " Markdown support
+Plugin 'pangloss/vim-javascript'          " Better JS support
+Plugin 'groenewege/vim-less'              " LESS support
+Plugin 'mustache/vim-mustache-handlebars' " Mustache/handlebars support
+Plugin 'flazz/vim-colorschemes'           " Color schemes
+
+" Not really hooked up yet...
+"Plugin 'elzr/vim-json'                    " JSON support
+"Plugin 'vim-scripts/YankRing.vim'         " Yank management
+"Plugin 'ryanoasis/vim-devicons'           " Font icons - this would be fun one day
+"Plugin 'diepm/vim-rest-console'           " REST console - I should try this sometime
+"Plugin 'christoomey/vim-tmux-navigator'   " tmux friend
+
+call vundle#end()
+
+filetype on
+filetype plugin indent on
+
+
+"""""""""""""""""""""""""""""""
 " Brian's personal stuff
+colorscheme desert
+
 set ts=3
 set shiftwidth=3
-set number "show line numbers
+set number                 " show line numbers
+set hidden                 " Why is this not a default
+set modelines=0            " Apparently this is good security
+set lazyredraw             " Don't update the display while executing macros
+set fo-=ro                 " Assuming the next line is also a comment hurts more than it helps
+set noshowmode             " Powerline will show us what mode we're in
+set nofoldenable           " Folding is aggravating
+set autoread               " Set to auto read when a file is changed from the outside
+set scrolloff=8            " Start scrolling when we're 8 lines away from margins
+set t_Co=256               " Use 256 colors
+syntax on                  " Turn on that syntax highlighting
 
-" Forget being compatible with good ol' vi
-set nocompatible
-
-" Apparently this is good security
-set modelines=0
-
-" Fire up pathogen
-call pathogen#infect()
-
-" Get that filetype stuff happening
-filetype on
-filetype plugin on
-filetype indent on
-
-" Turn on that syntax highlighting
-syntax on
-
-" Prevent vim from forgetting that we're in a php file
-let php_minlines=500
-
-" Assuming the next line is also a comment hurts more than it helps
-set fo-=ro
-
-" Why is this not a default
-set hidden
-
-" Don't update the display while executing macros
-set lazyredraw
-
-" Powerline will show us what mode we're in
-set noshowmode
-
-" Enable enhanced command-line completion.
-set wildchar=<Tab> wildmenu wildmode=full
-
-" Vim's default split positions are bizarre
-set splitbelow
-set splitright
-
-" Folding is aggravating
-" set nofoldenable
-
-" Search strings with capitals are case-sensitive; lower-case searches aren't
-set ignorecase
-set smartcase
-
-"Find the next match as we type the search
-set incsearch
-
-"Show matches as we type
-set showmatch
-
-"Hilight searches by default
-set hlsearch
+let php_minlines=500       " Prevent vim from forgetting that we're in a php file
 
 " Turn off swap files
 set noswapfile
 set nobackup
 set nowb
 
-" Set to auto read when a file is changed from the outside
-set autoread
+" Search stuff
+set incsearch              " Find the next match as we type the search
+set showmatch              " Show matches as we type
+set hlsearch               " Hilight searches by default
+set ignorecase             " Lowercase searches aren't case-sensitive
+set smartcase              " Searches with capital letters are case-sensitive
+
+" Enable enhanced command-line completion
+set wildchar=<Tab> wildmenu wildmode=full
+
+" Vim's default split positions are bizarre
+set splitbelow
+set splitright
+
+
+"""""""""""""""""""""""""""""""
+" Remappings
 
 " %?  Really?
 nnoremap <tab> %
@@ -88,54 +86,23 @@ vnoremap <tab> %
 " why bother hitting shift all the time?
 nnoremap ; :
 
-" Fire up CtrlP
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-
 " Switch between buffers easily
-" TODO I want something like :bswitch or :bs
 map :bs :b#
 
-" LEADER KEY STUFF
 " stupid \ key is hard to hit
 let mapleader = ","
 
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" NERDtree stuff
-nnoremap <leader>nt :NERDTreeToggle<cr>
-"autocmd VimEnter * NERDTree
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-"autocmd VimEnter * wincmd p
+" NERDtree - f for 'file'
+nnoremap <leader>f :NERDTreeToggle<cr>
 
-" Unite - disabled for now because I don't understand it
-" let g:unite_source_history_yank_enable = 1
-" call unite#filters#matcher_default#use(['matcher_fuzzy'])
-" nnoremap <C-p> :Unite file_rec/async<cr>
-" nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
-" nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files   -start-insert file<cr>
-" nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru     -start-insert file_mru<cr>
-" nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
-" nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank history/yank<cr>
-" nnoremap <leader>e :<C-u>Unite -no-split -buffer-name=buffer  buffer<cr>
-" 
-" " Custom mappings for the unite buffer
-" autocmd FileType unite call s:unite_settings()
-" function! s:unite_settings()
-" " Play nice with supertab
-" 	let b:SuperTabDisabled=1
-" 	" Enable navigation with control-j and control-k in insert mode
-" 	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-" 	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-" endfunction
-
-"Clear search with , + space
+" Clear search with , + space
 nnoremap <leader><space> :nohlsearch<cr>
 
-"Start scrolling when we're 8 lines away from margins
-set scrolloff=8
 
+"""""""""""""""""""""""""""""""
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
@@ -144,19 +111,36 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-"Fugitive statusline
+
+"""""""""""""""""""""""""""""""
+" Plugin-specific
+
+" Fugitive
 set statusline=%{fugitive#statusline()}
 
 " Airline
 let g:airline_powerline_fonts = 1
-" Powerline
-"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
-" Always show statusline
 set laststatus=2
 
-" Use 256 colours (Use this setting only if your terminal supports 256 colours)
-set t_Co=256
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
+"""""""""""""""""""""""""""""""
+" File-specific
+
+" Open Pentaho (PRPT) files with zip.vim
+au BufReadCmd *.prpt call zip#Browse(expand("<amatch>"))
+
+
+"""""""""""""""""""""""""""""""
 " HARDCORE -- disable arrow keys in insert mode
 nnoremap <up> <nop>
 nnoremap <down> <nop>
