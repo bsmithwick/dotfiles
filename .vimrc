@@ -17,9 +17,11 @@ Plugin 'vim-ctrlspace/vim-ctrlspace'      " Buffer manager, sort of like CtrlP
 Plugin 'jlanzarotta/bufexplorer'          " Buffer explorer
 Plugin 'scrooloose/nerdtree'              " File explorer
 Plugin 'scrooloose/nerdcommenter'         " Comment insertion
+Plugin 'Xuyuanp/nerdtree-git-plugin'      " Nerdtree git status flagging
 Plugin 'scrooloose/syntastic'             " Syntax checker
 Plugin 'ervandew/supertab'                " Tab-completion inside command mode
 Plugin 'godlygeek/tabular'                " Required for vim-markdown
+Plugin 'ryanoasis/vim-devicons'           " Fun icons!!
 Plugin 'plasticboy/vim-markdown'          " Markdown support
 Plugin 'pangloss/vim-javascript'          " Better JS support
 Plugin 'groenewege/vim-less'              " LESS support
@@ -28,7 +30,6 @@ Plugin 'mustache/vim-mustache-handlebars' " Mustache/handlebars support
 " Not really hooked up yet...
 "Plugin 'vim-scripts/YankRing.vim'         " Yank management
 "Plugin 'elzr/vim-json'                    " JSON support
-"Plugin 'ryanoasis/vim-devicons'           " Font icons - this would be fun one day
 "Plugin 'diepm/vim-rest-console'           " REST console - I should try this sometime
 
 " Airline stuff
@@ -58,6 +59,7 @@ set nofoldenable           " Folding is aggravating
 set autoread               " Set to auto read when a file is changed from the outside
 set scrolloff=8            " Start scrolling when we're 8 lines away from margins
 set t_Co=256               " Use 256 colors
+set encoding=utf8          " UTF-8
 syntax on                  " Turn on that syntax highlighting
 
 let php_minlines=500       " Prevent vim from forgetting that we're in a php file
