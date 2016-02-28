@@ -21,6 +21,7 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'      " Nerdtree git status flagging
 Plugin 'scrooloose/syntastic'             " Syntax checker
 Plugin 'ervandew/supertab'                " Tab-completion inside command mode
 Plugin 'godlygeek/tabular'                " Required for vim-markdown
+Plugin 'tpope/vim-surround'               " Surround text
 Plugin 'ryanoasis/vim-devicons'           " Fun icons!!
 Plugin 'plasticboy/vim-markdown'          " Markdown support
 Plugin 'pangloss/vim-javascript'          " Better JS support
