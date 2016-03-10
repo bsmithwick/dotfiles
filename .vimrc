@@ -15,6 +15,12 @@ Plugin 'tpope/vim-fugitive'               " Git awesomeness
 Plugin 'airblade/vim-gitgutter'           " Git changes in gutter
 Plugin 'scrooloose/syntastic'             " Syntax checker
 Plugin 'ctrlpvim/ctrlp.vim'               " Sublime-style fuzzy file searching
+Plugin 'tpope/vim-vinegar'                " Make netrw better
+Plugin 'scrooloose/nerdcommenter'         " Comment insertion
+Plugin 'rking/ag.vim'                     " Silver searcher inside vim
+Plugin 'Raimondi/delimitMate'             " Auto-completion of quotes, parens, etc
+Plugin 'ConradIrwin/vim-bracketed-paste'  " Make pasting not be horrible
+
 
 " Airline stuff
 Plugin 'vim-airline/vim-airline'          " Status bar
@@ -25,7 +31,6 @@ Plugin 'bling/vim-bufferline'             " Visualization of open buffers
 " TODO
 "Plugin 'vim-scripts/YankRing.vim'         " Yank management
 "Plugin 'scrooloose/nerdtree'              " File explorer
-"Plugin 'scrooloose/nerdcommenter'         " Comment insertion
 "Plugin 'tpope/vim-surround'               " Surround text
 
 call vundle#end()
@@ -45,8 +50,10 @@ let php_minlines=500       " Prevent vim from forgetting that we're in a php fil
 
 " Color preferences - use this with Gnome terminal color scheme 'Tango'
 colorscheme default
-highlight IncSearch ctermbg=Yellow ctermfg=Black
+highlight IncSearch ctermbg=Black ctermfg=Yellow
 highlight Search ctermbg=Yellow ctermfg=Black
+
+let php_minlines=500       " Prevent vim from forgetting that we're in a php file
 
 " Turn off swap files
 set noswapfile
@@ -89,7 +96,11 @@ autocmd BufWinLeave * call clearmatches()
 
 """""""""""""""""""""""""""""""
 " Plugin-specific
-"
+
+" Sensible.vim
+runtime! plugin/sensible.vim
+set scrolloff=8            " Start scrolling when we're 8 lines away from margins
+
 " Fugitive
 set statusline=%{fugitive#statusline()}
 
@@ -142,7 +153,9 @@ noremap <Right> <NOP>
 " NOTES/TODO:
 " - Ctrl+L to clear search (sensible.vim)
 " - :vsplit #2 to split with buffer 2 in the new pane
+" - Visual select, then <leader>c<space> to do comment toggling (nerdcommenter)
+" - :Ag to search
+" - TODO: figure out how to use CtrlP for buffer searching
 
 " Old configs, replaced by sensible.vim -- revisit these?
-" set scrolloff=8            " Start scrolling when we're 8 lines away from margins
 " set nofoldenable           " Folding is aggravating
