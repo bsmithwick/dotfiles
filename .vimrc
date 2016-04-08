@@ -20,7 +20,13 @@ Plugin 'scrooloose/nerdcommenter'         " Comment insertion
 Plugin 'rking/ag.vim'                     " Silver searcher inside vim
 Plugin 'Raimondi/delimitMate'             " Auto-completion of quotes, parens, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'  " Make pasting not be horrible
+Plugin 'tpope/vim-surround'               " Surround text
+Plugin 'tpope/vim-repeat'                 " Repeat plugin maps, useful with vim-surround
+Plugin 'qpkorr/vim-bufkill'               " Kill buffers without killing their containing windows
 
+" Syntax highlighting
+Plugin 'JulesWang/css.vim'                " CSS syntax file
+Plugin 'genoma/vim-less' 						" Less syntax highlighting
 
 " Airline stuff
 Plugin 'vim-airline/vim-airline'          " Status bar
@@ -31,7 +37,6 @@ Plugin 'bling/vim-bufferline'             " Visualization of open buffers
 " TODO
 "Plugin 'vim-scripts/YankRing.vim'         " Yank management
 "Plugin 'scrooloose/nerdtree'              " File explorer
-"Plugin 'tpope/vim-surround'               " Surround text
 
 call vundle#end()
 
@@ -43,10 +48,10 @@ set shiftwidth=3
 set t_Co=256
 set encoding=utf8
 set number                 " show line numbers
-set hidden                 " Why is this not a default
+set hidden                 " Allow multiple buffers to be edited at once
 set noshowmode             " Hide status on the status line
 syntax on                  " Turn on syntax highlighting
-let php_minlines=500       " Prevent vim from forgetting that we're in a php file
+let php_minlines=1000       " Prevent vim from forgetting that we're in a php file
 
 " Color preferences - use this with Gnome terminal color scheme 'Tango'
 colorscheme default
@@ -80,9 +85,6 @@ map :bs :b#
 
 " Buffer list
 nnoremap <leader>l :ls<cr>
-
-" File list
-nnoremap <leader>f :e.<cr>
 
 """""""""""""""""""""""""""""""
 " Highlight extra whitespace
@@ -129,6 +131,7 @@ let g:bufferline_echo = 0
 autocmd VimEnter *
  \ let &statusline='%{bufferline#refresh_status()}'
 	\ .bufferline#get_status_string()
+let g:airline#extensions#tabline#fnamecollapse = 0
 
 " Airline + Tmuxline
 let g:airline#extensions#tmuxline#enabled = 0
@@ -155,6 +158,7 @@ noremap <Right> <NOP>
 " - :vsplit #2 to split with buffer 2 in the new pane
 " - Visual select, then <leader>c<space> to do comment toggling (nerdcommenter)
 " - :Ag to search
+" - * to search for the word containing the cursor
 " - TODO: figure out how to use CtrlP for buffer searching
 
 " Old configs, replaced by sensible.vim -- revisit these?
