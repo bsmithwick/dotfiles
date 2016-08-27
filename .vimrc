@@ -1,7 +1,8 @@
 """""""""""""""""""""""""""""""
 " Vundle - package management
-" To install:  vim +PluginInstall +qall (from shell) or :PluginInstall (inside vim)
-
+" To install:
+" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"
 " Required for Vundle
 set nocompatible
 filetype off
