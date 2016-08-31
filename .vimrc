@@ -10,17 +10,18 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'             " Package management
-Plugin 'tpope/vim-sensible'               " Sensible defaults
-Plugin 'tpope/vim-fugitive'               " Git awesomeness
-Plugin 'airblade/vim-gitgutter'           " Git changes in gutter
-Plugin 'scrooloose/syntastic'             " Syntax checker
-Plugin 'ctrlpvim/ctrlp.vim'               " Sublime-style fuzzy file searching
-Plugin 'tpope/vim-vinegar'                " Make netrw better
-Plugin 'Raimondi/delimitMate'             " Auto-completion of quotes, parens, etc
-Plugin 'ConradIrwin/vim-bracketed-paste'  " Make pasting not be horrible
-Plugin 'qpkorr/vim-bufkill'               " Kill buffers without killing their containing windows
-Plugin 'christoomey/vim-tmux-navigator'   " vim + tmux split hotkeys
+Plugin 'VundleVim/Vundle.vim'                " Package management
+Plugin 'tpope/vim-sensible'                  " Sensible defaults
+Plugin 'tpope/vim-fugitive'                  " Git awesomeness
+Plugin 'airblade/vim-gitgutter'              " Git changes in gutter
+Plugin 'scrooloose/syntastic'                " Syntax checker
+Plugin 'ctrlpvim/ctrlp.vim'                  " Sublime-style fuzzy file searching
+Plugin 'tpope/vim-vinegar'                   " Make netrw better
+Plugin 'Raimondi/delimitMate'                " Auto-completion of quotes, parens, etc
+Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
+Plugin 'qpkorr/vim-bufkill'                  " Kill buffers without killing their containing windows
+Plugin 'christoomey/vim-tmux-navigator'      " vim + tmux split hotkeys
+Plugin 'tmux-plugins/vim-tmux-focus-events'  " restore broken focus events for vim inside tmux
 
 " I need to get better with these
 Plugin 'scrooloose/nerdcommenter'         " Comment insertion
