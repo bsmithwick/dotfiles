@@ -16,13 +16,15 @@ Plugin 'airblade/vim-gitgutter'           " Git changes in gutter
 Plugin 'scrooloose/syntastic'             " Syntax checker
 Plugin 'ctrlpvim/ctrlp.vim'               " Sublime-style fuzzy file searching
 Plugin 'tpope/vim-vinegar'                " Make netrw better
-Plugin 'scrooloose/nerdcommenter'         " Comment insertion
-Plugin 'rking/ag.vim'                     " Silver searcher inside vim
 Plugin 'Raimondi/delimitMate'             " Auto-completion of quotes, parens, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'  " Make pasting not be horrible
+Plugin 'qpkorr/vim-bufkill'               " Kill buffers without killing their containing windows
+
+" I need to get better with these
+Plugin 'scrooloose/nerdcommenter'         " Comment insertion
+Plugin 'rking/ag.vim'                     " Silver searcher inside vim
 Plugin 'tpope/vim-surround'               " Surround text
 Plugin 'tpope/vim-repeat'                 " Repeat plugin maps, useful with vim-surround
-Plugin 'qpkorr/vim-bufkill'               " Kill buffers without killing their containing windows
 
 " Syntax highlighting
 Plugin 'JulesWang/css.vim'                " CSS syntax file
