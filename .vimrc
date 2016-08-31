@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""
 " Vundle - package management
-" To install:
-" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" To install: git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" Install new plugins:  vim +PluginInstall +qall (from shell) or :PluginInstall (inside vim)
 "
 " Required for Vundle
 set nocompatible
@@ -20,6 +20,7 @@ Plugin 'tpope/vim-vinegar'                " Make netrw better
 Plugin 'Raimondi/delimitMate'             " Auto-completion of quotes, parens, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'  " Make pasting not be horrible
 Plugin 'qpkorr/vim-bufkill'               " Kill buffers without killing their containing windows
+Plugin 'christoomey/vim-tmux-navigator'   " vim + tmux split hotkeys
 
 " I need to get better with these
 Plugin 'scrooloose/nerdcommenter'         " Comment insertion
