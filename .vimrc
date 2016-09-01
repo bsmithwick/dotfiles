@@ -22,6 +22,7 @@ Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
 Plugin 'qpkorr/vim-bufkill'                  " Kill buffers without killing their containing windows
 Plugin 'christoomey/vim-tmux-navigator'      " vim + tmux split hotkeys
 Plugin 'tmux-plugins/vim-tmux-focus-events'  " restore broken focus events for vim inside tmux
+Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 
 " I need to get better with these
 Plugin 'scrooloose/nerdcommenter'         " Comment insertion
