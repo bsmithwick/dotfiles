@@ -12,37 +12,51 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'                " Package management
 Plugin 'tpope/vim-sensible'                  " Sensible defaults
-Plugin 'tpope/vim-fugitive'                  " Git awesomeness
-Plugin 'airblade/vim-gitgutter'              " Git changes in gutter
 Plugin 'scrooloose/syntastic'                " Syntax checker
 Plugin 'ctrlpvim/ctrlp.vim'                  " Sublime-style fuzzy file searching
 Plugin 'tpope/vim-vinegar'                   " Make netrw better
 Plugin 'Raimondi/delimitMate'                " Auto-completion of quotes, parens, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
-Plugin 'qpkorr/vim-bufkill'                  " Kill buffers without killing their containing windows
-Plugin 'christoomey/vim-tmux-navigator'      " vim + tmux split hotkeys
-Plugin 'tmux-plugins/vim-tmux-focus-events'  " restore broken focus events for vim inside tmux
+Plugin 'majutsushi/tagbar'                   " Explore file with ctags
+Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
+Plugin 'ap/vim-css-color'                    " Preview css colors
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 
-" I need to get better with these
-Plugin 'scrooloose/nerdcommenter'         " Comment insertion
-Plugin 'rking/ag.vim'                     " Silver searcher inside vim
-Plugin 'tpope/vim-surround'               " Surround text
-Plugin 'tpope/vim-repeat'                 " Repeat plugin maps, useful with vim-surround
-
 " Syntax highlighting
-Plugin 'JulesWang/css.vim'                " CSS syntax file
-Plugin 'genoma/vim-less' 						" Less syntax highlighting
+Plugin 'JulesWang/css.vim'
+Plugin 'genoma/vim-less'
+Plugin 'pangloss/vim-javascript'
+Plugin 'elzr/vim-json'
+Plugin 'stanangeloff/php.vim'
+
+" Buffer management
+Plugin 'bling/vim-bufferline'                " Visualization of open buffers
+Plugin 'jlanzarotta/bufexplorer'             " Explore buffers
+Plugin 'qpkorr/vim-bufkill'                  " Kill buffers without killing their containing windows
+
+" Git stuff
+Plugin 'airblade/vim-gitgutter'              " Git changes in gutter
+Plugin 'tpope/vim-fugitive'                  " Git awesomeness
 
 " Airline stuff
-Plugin 'vim-airline/vim-airline'          " Status bar
-Plugin 'vim-airline/vim-airline-themes'   " Status bar themes
-Plugin 'edkolev/tmuxline.vim'             " tmux status line generator
-Plugin 'bling/vim-bufferline'             " Visualization of open buffers
+Plugin 'vim-airline/vim-airline'             " Status bar
+Plugin 'vim-airline/vim-airline-themes'      " Status bar themes
+
+" Tmux stuff
+Plugin 'edkolev/tmuxline.vim'                " tmux status line generator
+Plugin 'christoomey/vim-tmux-navigator'      " vim + tmux split hotkeys
+Plugin 'tmux-plugins/vim-tmux-focus-events'  " restore broken focus events for vim inside tmux
+
+" I need to get better with these
+Plugin 'scrooloose/nerdcommenter'            " Comment insertion
+Plugin 'rking/ag.vim'                        " Silver searcher inside vim
 
 " TODO
-"Plugin 'vim-scripts/YankRing.vim'         " Yank management
-"Plugin 'scrooloose/nerdtree'              " File explorer
+"Plugin 'scrooloose/nerdtree'                " File explorer
+"Plugin 'vim-scripts/YankRing.vim'           " Yank management
+"Plugin 'tpope/vim-surround'                 " Surround text
+"Plugin 'tpope/vim-repeat'                   " Repeat plugin maps, useful with vim-surround
+"Plugin 'ryanoasis/vim-devicons'             " Fancy icons
 
 call vundle#end()
 
@@ -64,8 +78,6 @@ colorscheme default
 highlight IncSearch ctermbg=Black ctermfg=Yellow
 highlight Search ctermbg=Yellow ctermfg=Black
 
-let php_minlines=500       " Prevent vim from forgetting that we're in a php file
-
 " Turn off swap files
 set noswapfile
 set nobackup
@@ -81,7 +93,6 @@ set wildchar=<Tab> wildmenu wildmode=full
 " Vim's default split positions are bizarre
 set splitbelow
 set splitright
-
 
 """""""""""""""""""""""""""""""
 " Remappings
@@ -121,8 +132,8 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 1
 let g:syntastic_enable_highlighting = 0
 
 " Airline
@@ -142,6 +153,9 @@ let g:airline#extensions#tabline#fnamecollapse = 0
 " Airline + Tmuxline
 let g:airline#extensions#tmuxline#enabled = 0
 let g:tmuxline_preset = 'powerline'
+
+" Tagbar
+nmap <F8> :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""
 " File-specific
