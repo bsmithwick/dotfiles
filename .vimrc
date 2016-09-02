@@ -103,6 +103,10 @@ map :bs :b#
 " Buffer list
 nnoremap <leader>l :ls<cr>
 
+" Clear search (explicitly or with carriage return)
+nnoremap <leader>s :noh<cr>
+nnoremap <CR> :noh<CR><CR>
+
 """""""""""""""""""""""""""""""
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
