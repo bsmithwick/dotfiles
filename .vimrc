@@ -18,16 +18,17 @@ Plugin 'tpope/vim-vinegar'                   " Make netrw better
 Plugin 'Raimondi/delimitMate'                " Auto-completion of quotes, parens, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                   " Explore file with ctags
-Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
 Plugin 'ap/vim-css-color'                    " Preview css colors
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 
-" Syntax highlighting
-Plugin 'JulesWang/css.vim'
+Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
 Plugin 'genoma/vim-less'
+Plugin 'mxw/vim-jsx'                         " for React
 Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
 Plugin 'stanangeloff/php.vim'
+
+" Syntax highlighting
 
 " Buffer management
 Plugin 'bling/vim-bufferline'                " Visualization of open buffers
@@ -139,6 +140,7 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 1
 let g:syntastic_enable_highlighting = 0
+let g:syntastic_javascript_checkers = ['eslint']
 
 " Airline
 let g:airline_powerline_fonts = 1
