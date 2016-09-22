@@ -21,6 +21,7 @@ Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                   " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
+Plugin 'benmills/vimux'                      " Send tmux commands from vim
 
 " Syntax highlighting
 Plugin 'ap/vim-css-color'                    " Preview css colors
@@ -163,6 +164,10 @@ let g:tmuxline_preset = 'powerline'
 
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
+
+" Vimux
+map <leader>x :VimuxPromptCommand<CR>
+map <leader>X :VimuxRunLastCommand<CR>
 
 """""""""""""""""""""""""""""""
 " File-specific
