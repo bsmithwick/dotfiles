@@ -2,6 +2,7 @@
 " Vundle - package management
 " To install: git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 " Install new plugins:  vim +PluginInstall +qall (from shell) or :PluginInstall (inside vim)
+" Update new plugins: :PluginUpdate (inside vim)
 "
 " Required for Vundle
 set nocompatible
@@ -186,6 +187,3 @@ noremap <Right> <NOP>
 " - :Ag to search
 " - * to search for the word containing the cursor
 " - TODO: figure out how to use CtrlP for buffer searching
-
-" Old configs, replaced by sensible.vim -- revisit these?
-" set nofoldenable           " Folding is aggravating
