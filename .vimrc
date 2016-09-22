@@ -19,7 +19,6 @@ Plugin 'Raimondi/delimitMate'                " Auto-completion of quotes, parens
 Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                   " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
-
 Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
 
 " Syntax highlighting
@@ -51,6 +50,7 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'  " restore broken focus events for v
 " I need to get better with these
 Plugin 'scrooloose/nerdcommenter'            " Comment insertion
 Plugin 'rking/ag.vim'                        " Silver searcher inside vim
+Plugin 'tpope/vim-rsi'                       " Readline key bindings
 
 " TODO
 "Plugin 'scrooloose/nerdtree'                " File explorer
