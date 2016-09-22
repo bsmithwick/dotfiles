@@ -18,17 +18,17 @@ Plugin 'tpope/vim-vinegar'                   " Make netrw better
 Plugin 'Raimondi/delimitMate'                " Auto-completion of quotes, parens, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                   " Explore file with ctags
-Plugin 'ap/vim-css-color'                    " Preview css colors
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 
 Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
-Plugin 'genoma/vim-less'
-Plugin 'mxw/vim-jsx'                         " for React
-Plugin 'pangloss/vim-javascript'
-Plugin 'elzr/vim-json'
-Plugin 'stanangeloff/php.vim'
 
 " Syntax highlighting
+Plugin 'ap/vim-css-color'                    " Preview css colors
+"Plugin 'genoma/vim-less'
+"Plugin 'mxw/vim-jsx'                         " for React
+"Plugin 'pangloss/vim-javascript'
+"Plugin 'elzr/vim-json'
+"Plugin 'stanangeloff/php.vim'
 
 " Buffer management
 Plugin 'bling/vim-bufferline'                " Visualization of open buffers
