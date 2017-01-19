@@ -35,6 +35,7 @@ Plugin 'ap/vim-css-color'                    " Preview css colors
 Plugin 'bling/vim-bufferline'                " Visualization of open buffers
 Plugin 'jlanzarotta/bufexplorer'             " Explore buffers
 Plugin 'qpkorr/vim-bufkill'                  " Kill buffers without killing their containing windows
+Plugin 'https://github.com/vim-scripts/ZoomWin.git' " Zoom buffer to full screen with <C-w>o
 
 " Git stuff
 Plugin 'airblade/vim-gitgutter'              " Git changes in gutter
