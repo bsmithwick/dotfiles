@@ -11,56 +11,57 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim'                " Package management
-Plugin 'tpope/vim-sensible'                  " Sensible defaults
-Plugin 'scrooloose/syntastic'                " Syntax checker
-Plugin 'ctrlpvim/ctrlp.vim'                  " Sublime-style fuzzy file searching
-Plugin 'tpope/vim-vinegar'                   " Make netrw better
-Plugin 'Raimondi/delimitMate'                " Auto-completion of quotes, parens, etc
-Plugin 'ConradIrwin/vim-bracketed-paste'     " Make pasting not be horrible
-Plugin 'majutsushi/tagbar'                   " Explore file with ctags
+Plugin 'VundleVim/Vundle.vim'                       " Package management
+Plugin 'tpope/vim-sensible'                         " Sensible defaults
+Plugin 'scrooloose/syntastic'                       " Syntax checker - temporarily disabled because such stupidness was happening in JS files
+" Plugin 'wookiehangover/jshint.vim'                  " JS syntax checker
+Plugin 'ctrlpvim/ctrlp.vim'                         " Sublime-style fuzzy file searching
+Plugin 'tpope/vim-vinegar'                          " Make netrw better
+Plugin 'Raimondi/delimitMate'                       " Auto-completion of quotes, parens, etc
+Plugin 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
+Plugin 'majutsushi/tagbar'                          " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
-Plugin 'terryma/vim-multiple-cursors'        " Sublime-style multiple cursors (Ctrl+n)
-Plugin 'benmills/vimux'                      " Send tmux commands from vim
+Plugin 'terryma/vim-multiple-cursors'               " Sublime-style multiple cursors (Ctrl+n)
+Plugin 'benmills/vimux'                             " Send tmux commands from vim
 
 " Syntax highlighting
-Plugin 'ap/vim-css-color'                    " Preview css colors
+Plugin 'ap/vim-css-color'                           " Preview css colors
 "Plugin 'genoma/vim-less'
-"Plugin 'mxw/vim-jsx'                         " for React
+"Plugin 'mxw/vim-jsx'                               " for React
 "Plugin 'pangloss/vim-javascript'
 "Plugin 'elzr/vim-json'
 "Plugin 'stanangeloff/php.vim'
 
 " Buffer management
-Plugin 'bling/vim-bufferline'                " Visualization of open buffers
-Plugin 'jlanzarotta/bufexplorer'             " Explore buffers
-Plugin 'qpkorr/vim-bufkill'                  " Kill buffers without killing their containing windows
+Plugin 'bling/vim-bufferline'                       " Visualization of open buffers
+Plugin 'jlanzarotta/bufexplorer'                    " Explore buffers
+Plugin 'qpkorr/vim-bufkill'                         " Kill buffers without killing their containing windows
 Plugin 'https://github.com/vim-scripts/ZoomWin.git' " Zoom buffer to full screen with <C-w>o
 
 " Git stuff
-Plugin 'airblade/vim-gitgutter'              " Git changes in gutter
-Plugin 'tpope/vim-fugitive'                  " Git awesomeness
+Plugin 'airblade/vim-gitgutter'                     " Git changes in gutter
+Plugin 'tpope/vim-fugitive'                         " Git awesomeness
 
 " Airline stuff
-Plugin 'vim-airline/vim-airline'             " Status bar
-Plugin 'vim-airline/vim-airline-themes'      " Status bar themes
+Plugin 'vim-airline/vim-airline'                    " Status bar
+Plugin 'vim-airline/vim-airline-themes'             " Status bar themes
 
 " Tmux stuff
-Plugin 'edkolev/tmuxline.vim'                " tmux status line generator
-Plugin 'christoomey/vim-tmux-navigator'      " vim + tmux split hotkeys
-Plugin 'tmux-plugins/vim-tmux-focus-events'  " restore broken focus events for vim inside tmux
+Plugin 'edkolev/tmuxline.vim'                       " tmux status line generator
+Plugin 'christoomey/vim-tmux-navigator'             " vim + tmux split hotkeys
+Plugin 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events for vim inside tmux
 
 " I need to get better with these
-Plugin 'scrooloose/nerdcommenter'            " Comment insertion
-Plugin 'rking/ag.vim'                        " Silver searcher inside vim
-Plugin 'tpope/vim-rsi'                       " Readline key bindings
+Plugin 'scrooloose/nerdcommenter'                   " Comment insertion
+Plugin 'mileszs/ack.vim'                            " Search (using ag, see keybindings below)
+Plugin 'tpope/vim-rsi'                              " Readline key bindings
 
 " TODO
-"Plugin 'scrooloose/nerdtree'                " File explorer
-"Plugin 'vim-scripts/YankRing.vim'           " Yank management
-"Plugin 'tpope/vim-surround'                 " Surround text
-"Plugin 'tpope/vim-repeat'                   " Repeat plugin maps, useful with vim-surround
-"Plugin 'ryanoasis/vim-devicons'             " Fancy icons
+"Plugin 'scrooloose/nerdtree'                       " File explorer
+"Plugin 'vim-scripts/YankRing.vim'                  " Yank management
+"Plugin 'tpope/vim-surround'                        " Surround text
+"Plugin 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
+"Plugin 'ryanoasis/vim-devicons'                    " Fancy icons
 
 call vundle#end()
 
@@ -135,9 +136,10 @@ set statusline=%{fugitive#statusline()}
 set updatetime=250
 
 " Syntastic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" These are handled by airline apparently, so don't bother (??)
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
@@ -169,6 +171,13 @@ nmap <F8> :TagbarToggle<CR>
 " Vimux
 map <leader>x :VimuxPromptCommand<CR>
 map <leader>X :VimuxRunLastCommand<CR>
+
+" Ack.vim
+let g:ackprg = 'ag --vimgrep --smart-case'
+cnoreabbrev ag Ack
+cnoreabbrev aG Ack
+cnoreabbrev Ag Ack
+cnoreabbrev AG Ack
 
 """""""""""""""""""""""""""""""
 " File-specific
