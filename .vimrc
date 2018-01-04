@@ -23,6 +23,7 @@ Plugin 'majutsushi/tagbar'                          " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 Plugin 'terryma/vim-multiple-cursors'               " Sublime-style multiple cursors (Ctrl+n)
 Plugin 'benmills/vimux'                             " Send tmux commands from vim
+Plugin 'ryanoasis/vim-devicons'                     " Fancy icons
 
 " Syntax highlighting
 Plugin 'ap/vim-css-color'                           " Preview css colors
@@ -61,7 +62,6 @@ Plugin 'tpope/vim-rsi'                              " Readline key bindings
 "Plugin 'vim-scripts/YankRing.vim'                  " Yank management
 "Plugin 'tpope/vim-surround'                        " Surround text
 "Plugin 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
-"Plugin 'ryanoasis/vim-devicons'                    " Fancy icons
 
 call vundle#end()
 
@@ -178,6 +178,9 @@ cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
 cnoreabbrev AG Ack
+
+" Devicons
+set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete
 
 """""""""""""""""""""""""""""""
 " File-specific
