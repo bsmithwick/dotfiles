@@ -24,6 +24,9 @@ Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 Plugin 'terryma/vim-multiple-cursors'               " Sublime-style multiple cursors (Ctrl+n)
 Plugin 'benmills/vimux'                             " Send tmux commands from vim
 Plugin 'ryanoasis/vim-devicons'                     " Fancy icons
+Plugin 'JamshedVesuna/vim-markdown-preview'         " Preview markdown files
+Plugin 'chrisbra/csv.vim'
+
 
 " Syntax highlighting
 Plugin 'ap/vim-css-color'                           " Preview css colors
@@ -56,6 +59,7 @@ Plugin 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus event
 Plugin 'scrooloose/nerdcommenter'                   " Comment insertion
 Plugin 'mileszs/ack.vim'                            " Search (using ag, see keybindings below)
 Plugin 'tpope/vim-rsi'                              " Readline key bindings
+Plugin 'junegunn/fzf.vim'                           " Better fuzzy finder
 
 " TODO
 "Plugin 'scrooloose/nerdtree'                       " File explorer
@@ -76,7 +80,7 @@ set number                 " show line numbers
 set hidden                 " Allow multiple buffers to be edited at once
 set noshowmode             " Hide status on the status line
 syntax on                  " Turn on syntax highlighting
-let php_minlines=1000       " Prevent vim from forgetting that we're in a php file
+let php_minlines=5000       " Prevent vim from forgetting that we're in a php file
 
 " Color preferences - use this with Gnome terminal color scheme 'Tango'
 colorscheme default
@@ -135,6 +139,9 @@ set statusline=%{fugitive#statusline()}
 " GitGutter
 set updatetime=250
 
+" vim-startify
+let g:startify_custom_header = ''  " Disable fortune-teller cow
+
 " Syntastic
 " These are handled by airline apparently, so don't bother (??)
 " set statusline+=%#warningmsg#
@@ -181,6 +188,14 @@ cnoreabbrev AG Ack
 
 " Devicons
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete
+
+" Markdown preview
+let vim_markdown_preview_hotkey='<C-m>'
+let vim_markdown_preview_github=1
+
+" NERDTree
+"map <C-o> :NERDTreeToggle<CR>
+
 
 """""""""""""""""""""""""""""""
 " File-specific
