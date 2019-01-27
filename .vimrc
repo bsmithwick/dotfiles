@@ -13,11 +13,10 @@ call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'                       " Package management
 Plugin 'tpope/vim-sensible'                         " Sensible defaults
-Plugin 'scrooloose/syntastic'                       " Syntax checker - temporarily disabled because such stupidness was happening in JS files
-" Plugin 'wookiehangover/jshint.vim'                  " JS syntax checker
-Plugin 'ctrlpvim/ctrlp.vim'                         " Sublime-style fuzzy file searching
+Plugin 'scrooloose/syntastic'                       " Syntax checker
+" Plugin 'wookiehangover/jshint.vim'                " JS syntax checker - temporarily disabled because such stupidness was happening in JS files
 Plugin 'tpope/vim-vinegar'                          " Make netrw better
-Plugin 'Raimondi/delimitMate'                       " Auto-completion of quotes, parens, etc
+" Plugin 'Raimondi/delimitMate'                       " Auto-completion of quotes, parens, etc - this should be useful but it's just...not
 Plugin 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                          " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
@@ -25,7 +24,8 @@ Plugin 'terryma/vim-multiple-cursors'               " Sublime-style multiple cur
 Plugin 'benmills/vimux'                             " Send tmux commands from vim
 Plugin 'ryanoasis/vim-devicons'                     " Fancy icons
 Plugin 'JamshedVesuna/vim-markdown-preview'         " Preview markdown files
-Plugin 'chrisbra/csv.vim'
+Plugin 'chrisbra/csv.vim'                           " Visualize CSVs
+Plugin 'francoiscabrol/ranger.vim'                  " Ranger file browser
 
 
 " Syntax highlighting
@@ -38,9 +38,12 @@ Plugin 'ap/vim-css-color'                           " Preview css colors
 
 " Buffer management
 Plugin 'bling/vim-bufferline'                       " Visualization of open buffers
-Plugin 'jlanzarotta/bufexplorer'                    " Explore buffers
 Plugin 'qpkorr/vim-bufkill'                         " Kill buffers without killing their containing windows
 Plugin 'https://github.com/vim-scripts/ZoomWin.git' " Zoom buffer to full screen with <C-w>o
+
+" FZF and friends
+Plugin 'junegunn/fzf.vim'                           " Better fuzzy finder
+Plugin 'pbogut/fzf-mru.vim'                         " Search MRUs with FZF
 
 " Git stuff
 Plugin 'airblade/vim-gitgutter'                     " Git changes in gutter
@@ -56,10 +59,9 @@ Plugin 'christoomey/vim-tmux-navigator'             " vim + tmux split hotkeys
 Plugin 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events for vim inside tmux
 
 " I need to get better with these
-Plugin 'scrooloose/nerdcommenter'                   " Comment insertion
 Plugin 'mileszs/ack.vim'                            " Search (using ag, see keybindings below)
 Plugin 'tpope/vim-rsi'                              " Readline key bindings
-Plugin 'junegunn/fzf.vim'                           " Better fuzzy finder
+Plugin 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
 
 " TODO
 "Plugin 'scrooloose/nerdtree'                       " File explorer
@@ -138,6 +140,12 @@ set statusline=%{fugitive#statusline()}
 
 " GitGutter
 set updatetime=250
+" Clean up git gutter column background color
+highlight clear SignColumn
+highlight GitGutterAdd ctermfg=green guifg=darkgreen
+highlight GitGutterChange ctermfg=yellow guifg=darkyellow
+highlight GitGutterDelete ctermfg=red guifg=darkred
+highlight GitGutterChangeDelete ctermfg=yellow guifg=darkyellow
 
 " vim-startify
 let g:startify_custom_header = ''  " Disable fortune-teller cow
@@ -193,6 +201,17 @@ set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete
 let vim_markdown_preview_hotkey='<C-m>'
 let vim_markdown_preview_github=1
 
+" FZF
+" Replace Ctrl-P with FZF
+nnoremap <C-p> :Files<Cr>
+nnoremap <C-m> :FZFMru<Cr>
+nnoremap <C-b> :Buffers<Cr>
+nnoremap <C-g> :BCommits<Cr>
+" Use AG by default, so we respect .gitignore etc
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+" Bigger search results list
+let g:fzf_layout = { 'down': '~40%' }
+
 " NERDTree
 "map <C-o> :NERDTreeToggle<CR>
 
@@ -216,7 +235,5 @@ noremap <Right> <NOP>
 " NOTES/TODO:
 " - Ctrl+L to clear search (sensible.vim)
 " - :vsplit #2 to split with buffer 2 in the new pane
-" - Visual select, then <leader>c<space> to do comment toggling (nerdcommenter)
 " - :Ag to search
 " - * to search for the word containing the cursor
-" - TODO: figure out how to use CtrlP for buffer searching
