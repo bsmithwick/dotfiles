@@ -16,7 +16,7 @@ Plugin 'tpope/vim-sensible'                         " Sensible defaults
 Plugin 'scrooloose/syntastic'                       " Syntax checker
 " Plugin 'wookiehangover/jshint.vim'                " JS syntax checker - temporarily disabled because such stupidness was happening in JS files
 Plugin 'tpope/vim-vinegar'                          " Make netrw better
-" Plugin 'Raimondi/delimitMate'                       " Auto-completion of quotes, parens, etc - this should be useful but it's just...not
+Plugin 'Raimondi/delimitMate'                       " Auto-completion of quotes, parens, etc - this should be useful but it's just...not
 Plugin 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                          " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
@@ -25,7 +25,9 @@ Plugin 'benmills/vimux'                             " Send tmux commands from vi
 Plugin 'ryanoasis/vim-devicons'                     " Fancy icons
 Plugin 'JamshedVesuna/vim-markdown-preview'         " Preview markdown files
 Plugin 'chrisbra/csv.vim'                           " Visualize CSVs
+Plugin 'tpope/vim-eunuch'                           " Shell command sugar
 Plugin 'francoiscabrol/ranger.vim'                  " Ranger file browser
+Plugin 'Valloric/YouCompleteMe'                     " Code completion
 
 
 " Syntax highlighting
@@ -78,16 +80,12 @@ set ts=3
 set shiftwidth=3
 set t_Co=256
 set encoding=utf8
-set number                 " show line numbers
-set hidden                 " Allow multiple buffers to be edited at once
-set noshowmode             " Hide status on the status line
-syntax on                  " Turn on syntax highlighting
-let php_minlines=5000       " Prevent vim from forgetting that we're in a php file
-
-" Color preferences - use this with Gnome terminal color scheme 'Tango'
-colorscheme default
-highlight IncSearch ctermbg=Black ctermfg=Yellow
-highlight Search ctermbg=Yellow ctermfg=Black
+set number                                          " show line numbers
+set hidden                                          " Allow multiple buffers to be edited at once
+set noshowmode                                      " Hide status on the status line
+syntax on                                           " Turn on syntax highlighting
+let php_minlines=5000                               " Prevent vim from forgetting that we're in a php file
+set wildchar=<Tab> wildmenu wildmode=full           " Enable enhanced command-line completion
 
 " Turn off swap files
 set noswapfile
@@ -95,15 +93,17 @@ set nobackup
 set nowb
 
 " Search stuff
-set ignorecase             " Lowercase searches aren't case-sensitive
-set smartcase              " Searches with capital letters are case-sensitive
-
-" Enable enhanced command-line completion
-set wildchar=<Tab> wildmenu wildmode=full
+set ignorecase                                      " Lowercase searches aren't case-sensitive
+set smartcase                                       " Searches with capital letters are case-sensitive
 
 " Vim's default split positions are bizarre
 set splitbelow
 set splitright
+
+" Color preferences - use this with Gnome terminal color scheme 'Tango'
+colorscheme default
+highlight IncSearch ctermbg=Black ctermfg=Yellow
+highlight Search ctermbg=Yellow ctermfg=Black
 
 """""""""""""""""""""""""""""""
 " Remappings
@@ -133,7 +133,7 @@ autocmd BufWinLeave * call clearmatches()
 
 " Sensible.vim
 runtime! plugin/sensible.vim
-set scrolloff=8            " Start scrolling when we're 8 lines away from margins
+set scrolloff=8                                     " Start scrolling when we're 8 lines away from margins
 
 " Fugitive
 set statusline=%{fugitive#statusline()}
@@ -147,8 +147,11 @@ highlight GitGutterChange ctermfg=yellow guifg=darkyellow
 highlight GitGutterDelete ctermfg=red guifg=darkred
 highlight GitGutterChangeDelete ctermfg=yellow guifg=darkyellow
 
+" DelimitMate
+let delimitMate_matchpairs = "(:),[:],{:},<:>"
+
 " vim-startify
-let g:startify_custom_header = ''  " Disable fortune-teller cow
+let g:startify_custom_header = ''                   " Disable fortune-teller cow
 
 " Syntastic
 " These are handled by airline apparently, so don't bother (??)
@@ -207,17 +210,15 @@ nnoremap <C-p> :Files<Cr>
 nnoremap <C-m> :FZFMru<Cr>
 nnoremap <C-b> :Buffers<Cr>
 nnoremap <C-g> :BCommits<Cr>
-" Use AG by default, so we respect .gitignore etc
-let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-" Bigger search results list
-let g:fzf_layout = { 'down': '~40%' }
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'               " Use AG by default, so we respect .gitignore etc
+let g:fzf_layout = { 'down': '~40%' }               " Bigger search results list
 
 " NERDTree
 "map <C-o> :NERDTreeToggle<CR>
 
 
 """""""""""""""""""""""""""""""
-" File-specific
+" FILE-SPECIFIC
 
 " Open Pentaho (PRPT) files with zip.vim
 autocmd BufReadCmd *.prpt call zip#Browse(expand("<amatch>"))
