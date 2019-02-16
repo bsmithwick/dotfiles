@@ -16,7 +16,7 @@ Plugin 'tpope/vim-sensible'                         " Sensible defaults
 Plugin 'scrooloose/syntastic'                       " Syntax checker
 " Plugin 'wookiehangover/jshint.vim'                " JS syntax checker - temporarily disabled because such stupidness was happening in JS files
 Plugin 'tpope/vim-vinegar'                          " Make netrw better
-Plugin 'Raimondi/delimitMate'                       " Auto-completion of quotes, parens, etc - this should be useful but it's just...not
+Plugin 'Raimondi/delimitMate'                       " Auto-completion of parens, brackets, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                          " Explore file with ctags
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
@@ -29,6 +29,9 @@ Plugin 'tpope/vim-eunuch'                           " Shell command sugar
 Plugin 'francoiscabrol/ranger.vim'                  " Ranger file browser
 Plugin 'Valloric/YouCompleteMe'                     " Code completion
 
+" Colors and themes
+Plugin 'flazz/vim-colorschemes'                     " Color schemes
+Plugin 'Jonathanfilip/vim-lucius'
 
 " Syntax highlighting
 Plugin 'ap/vim-css-color'                           " Preview css colors
@@ -54,6 +57,7 @@ Plugin 'tpope/vim-fugitive'                         " Git awesomeness
 " Airline stuff
 Plugin 'vim-airline/vim-airline'                    " Status bar
 Plugin 'vim-airline/vim-airline-themes'             " Status bar themes
+Plugin 'edkolev/promptline.vim'                     " Bash shell prompt
 
 " Tmux stuff
 Plugin 'edkolev/tmuxline.vim'                       " tmux status line generator
@@ -100,8 +104,10 @@ set smartcase                                       " Searches with capital lett
 set splitbelow
 set splitright
 
-" Color preferences - use this with Gnome terminal color scheme 'Tango'
-colorscheme default
+" Color preferences
+set termguicolors
+"colorscheme jellybeans
+colorscheme jellyx
 highlight IncSearch ctermbg=Black ctermfg=Yellow
 highlight Search ctermbg=Yellow ctermfg=Black
 
@@ -166,22 +172,33 @@ let g:syntastic_enable_highlighting = 0
 let g:syntastic_javascript_checkers = ['eslint']
 
 " Airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='powerlineish'
 set laststatus=1
 set showtabline=0
+let g:airline_powerline_fonts = 1
+" let g:airline_theme='powerlineish'
+let g:airline_theme='jellybeans'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
+let g:airline#extensions#tabline#fnamecollapse = 0
 
 " Airline + Bufferline
 let g:bufferline_echo = 0
 autocmd VimEnter *
  \ let &statusline='%{bufferline#refresh_status()}'
 	\ .bufferline#get_status_string()
-let g:airline#extensions#tabline#fnamecollapse = 0
 
 " Airline + Tmuxline
 let g:airline#extensions#tmuxline#enabled = 0
 let g:tmuxline_preset = 'powerline'
+let g:tmuxline_theme = 'powerline'
+
+" Promptline
+let g:promptline_preset = {
+        \'a' : [ promptline#slices#host() ],
+        \'b' : [ promptline#slices#cwd() ],
+        \'z' : [ promptline#slices#vcs_branch() ],
+        \'warn' : [ promptline#slices#battery() ]}
+let g:promptline_theme = 'airline'
 
 " Tagbar
 nmap <F8> :TagbarToggle<CR>
@@ -191,7 +208,8 @@ map <leader>x :VimuxPromptCommand<CR>
 map <leader>X :VimuxRunLastCommand<CR>
 
 " Ack.vim
-let g:ackprg = 'ag --vimgrep --smart-case'
+let g:ackprg = 'ag --vimgrep --smart-case'          " Use the silver searcher, not Ack
+let g:ack_autoclose = 1                             " Close search window after selecting a result
 cnoreabbrev ag Ack
 cnoreabbrev aG Ack
 cnoreabbrev Ag Ack
@@ -205,9 +223,14 @@ let vim_markdown_preview_hotkey='<C-m>'
 let vim_markdown_preview_github=1
 
 " FZF
-" Replace Ctrl-P with FZF
-nnoremap <C-p> :Files<Cr>
-nnoremap <C-m> :FZFMru<Cr>
+" Custom function to search from git root
+function! s:find_git_root()
+  return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+endfunction
+command! ProjectFiles execute 'Files' s:find_git_root()
+" Replace Ctrl-P with FZF - use 'ProjectFiles' instead of 'Files' to use our custom function above
+nnoremap <C-p> :ProjectFiles<Cr>
+" nnoremap <C-m> :FZFMru<Cr> " causes collisions, find something better!
 nnoremap <C-b> :Buffers<Cr>
 nnoremap <C-g> :BCommits<Cr>
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'               " Use AG by default, so we respect .gitignore etc

@@ -11,6 +11,7 @@ set -o vi
 # User specific aliases and functions
 alias vi='vim'
 alias gitdiff='git difftool -d'
+alias open='xdg-open'
 
 source ~/.git-completion.sh
 
