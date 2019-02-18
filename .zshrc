@@ -28,9 +28,6 @@ RPROMPT='$(_git_branch_name)'
 
 bindkey "^R" history-incremental-pattern-search-backward
 
-# antigen - not now
-# source /home/bsmithwick/.antigenrc
-
 # Aliases
 alias gitdiff='git difftool -d'
 alias open='xdg-open'
