@@ -19,6 +19,7 @@ Plugin 'tpope/vim-vinegar'                          " Make netrw better
 Plugin 'Raimondi/delimitMate'                       " Auto-completion of parens, brackets, etc
 Plugin 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
 Plugin 'majutsushi/tagbar'                          " Explore file with ctags
+Plugin 'ludovicchabant/vim-gutentags'               " Generate ctags files
 Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
 Plugin 'terryma/vim-multiple-cursors'               " Sublime-style multiple cursors (Ctrl+n)
 Plugin 'benmills/vimux'                             " Send tmux commands from vim
@@ -42,7 +43,6 @@ Plugin 'ap/vim-css-color'                           " Preview css colors
 "Plugin 'stanangeloff/php.vim'
 
 " Buffer management
-Plugin 'bling/vim-bufferline'                       " Visualization of open buffers
 Plugin 'qpkorr/vim-bufkill'                         " Kill buffers without killing their containing windows
 Plugin 'https://github.com/vim-scripts/ZoomWin.git' " Zoom buffer to full screen with <C-w>o
 
@@ -65,8 +65,6 @@ Plugin 'christoomey/vim-tmux-navigator'             " vim + tmux split hotkeys
 Plugin 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events for vim inside tmux
 
 " I need to get better with these
-Plugin 'mileszs/ack.vim'                            " Search (using ag, see keybindings below)
-Plugin 'tpope/vim-rsi'                              " Readline key bindings
 Plugin 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
 
 " TODO
@@ -74,6 +72,7 @@ Plugin 'tpope/vim-commentary'                       " Type 'gc' to comment a lin
 "Plugin 'vim-scripts/YankRing.vim'                  " Yank management
 "Plugin 'tpope/vim-surround'                        " Surround text
 "Plugin 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
+"Plugin 'tpope/vim-rsi'                              " Readline key bindings
 
 call vundle#end()
 
@@ -117,11 +116,10 @@ highlight Search ctermbg=Yellow ctermfg=Black
 " Switch between buffers easily
 map :bs :b#
 
-" Buffer list
-nnoremap <leader>l :ls<cr>
+" Buffer list (s like tmux session list)
+nnoremap <leader>s :ls<cr>
 
-" Clear search (explicitly or with carriage return)
-nnoremap <leader>s :noh<cr>
+" Clear search with carriage return
 nnoremap <CR> :noh<CR><CR>
 
 """""""""""""""""""""""""""""""
@@ -160,10 +158,6 @@ let delimitMate_matchpairs = "(:),[:],{:},<:>"
 let g:startify_custom_header = ''                   " Disable fortune-teller cow
 
 " Syntastic
-" These are handled by airline apparently, so don't bother (??)
-" set statusline+=%#warningmsg#
-" set statusline+=%{SyntasticStatuslineFlag()}
-" set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
@@ -173,24 +167,23 @@ let g:syntastic_javascript_checkers = ['eslint']
 
 " Airline
 set laststatus=1
-set showtabline=0
+set showtabline=0                                   " Disable native vim tabline in favor of airline's tabline
 let g:airline_powerline_fonts = 1
-" let g:airline_theme='powerlineish'
-let g:airline_theme='jellybeans'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#tabline#fnamecollapse = 0
-
-" Airline + Bufferline
-let g:bufferline_echo = 0
-autocmd VimEnter *
- \ let &statusline='%{bufferline#refresh_status()}'
-	\ .bufferline#get_status_string()
+let g:airline_skip_empty_sections = 1
+let g:airline#extensions#tagbar#enabled = 1
+let g:airline_section_y = ''                        " Don't show fileencoding/fileformat
+let g:airline#extensions#gutentags#enabled = 1
+let g:airline_theme='jellybeans'
+" let g:airline_theme='powerlineish'
+" let g:airline_theme = 'serene'
+"let g:airline_theme = 'simple'
 
 " Airline + Tmuxline
-let g:airline#extensions#tmuxline#enabled = 0
 let g:tmuxline_preset = 'powerline'
-let g:tmuxline_theme = 'powerline'
+let g:tmuxline_theme = 'airline'
 
 " Promptline
 let g:promptline_preset = {
@@ -207,14 +200,6 @@ nmap <F8> :TagbarToggle<CR>
 map <leader>x :VimuxPromptCommand<CR>
 map <leader>X :VimuxRunLastCommand<CR>
 
-" Ack.vim
-let g:ackprg = 'ag --vimgrep --smart-case'          " Use the silver searcher, not Ack
-let g:ack_autoclose = 1                             " Close search window after selecting a result
-cnoreabbrev ag Ack
-cnoreabbrev aG Ack
-cnoreabbrev Ag Ack
-cnoreabbrev AG Ack
-
 " Devicons
 set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete
 
@@ -230,7 +215,7 @@ endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
 " Replace Ctrl-P with FZF - use 'ProjectFiles' instead of 'Files' to use our custom function above
 nnoremap <C-p> :ProjectFiles<Cr>
-" nnoremap <C-m> :FZFMru<Cr> " causes collisions, find something better!
+nnoremap <C-m> :FZFMru<Cr>
 nnoremap <C-b> :Buffers<Cr>
 nnoremap <C-g> :BCommits<Cr>
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'               " Use AG by default, so we respect .gitignore etc
@@ -259,5 +244,4 @@ noremap <Right> <NOP>
 " NOTES/TODO:
 " - Ctrl+L to clear search (sensible.vim)
 " - :vsplit #2 to split with buffer 2 in the new pane
-" - :Ag to search
 " - * to search for the word containing the cursor
