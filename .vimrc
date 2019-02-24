@@ -119,8 +119,11 @@ map :bs :b#
 " Buffer list (s like tmux session list)
 nnoremap <leader>s :ls<cr>
 
-" Clear search with carriage return
-nnoremap <CR> :noh<CR><CR>
+" Yank list
+nnoremap <leader>l :reg<cr>
+
+" Clear search with space + carriage return
+nnoremap <cr> :noh<cr><cr>
 
 """""""""""""""""""""""""""""""
 " Highlight extra whitespace
@@ -182,8 +185,8 @@ let g:airline_theme='jellybeans'
 "let g:airline_theme = 'simple'
 
 " Airline + Tmuxline
+let g:tmuxline_theme = 'airline'                    " inherit from airline theme
 let g:tmuxline_preset = 'powerline'
-let g:tmuxline_theme = 'airline'
 
 " Promptline
 let g:promptline_preset = {
@@ -215,7 +218,7 @@ endfunction
 command! ProjectFiles execute 'Files' s:find_git_root()
 " Replace Ctrl-P with FZF - use 'ProjectFiles' instead of 'Files' to use our custom function above
 nnoremap <C-p> :ProjectFiles<Cr>
-nnoremap <C-m> :FZFMru<Cr>
+nnoremap <C-t> :FZFMru<Cr>
 nnoremap <C-b> :Buffers<Cr>
 nnoremap <C-g> :BCommits<Cr>
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'               " Use AG by default, so we respect .gitignore etc
