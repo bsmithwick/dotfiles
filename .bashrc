@@ -12,6 +12,7 @@ set -o vi
 alias vi='vim'
 alias gitdiff='git difftool -d'
 alias open='xdg-open'
+alias svim='vim -u ~/.SpaceVim/vimrc'
 
 source ~/.git-completion.sh
 

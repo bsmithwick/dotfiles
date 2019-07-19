@@ -94,9 +94,14 @@ export COLORTERM='gnome-terminal'
 export EDITOR='vim'
 
 alias vi='vim'
+alias svim='vim -u ~/.SpaceVim/vimrc'
 alias gitdiff='git difftool -d'
 alias open='xdg-open'
 alias dwaws='/usr/bin/php ~/src/snaap/scripts/dw-aws.php'
+
+# dodge autocorrection
+unsetopt correct_all
+setopt correct
 
 # added for promptline
 #source ~/.promptline.sh
@@ -121,3 +126,13 @@ fg() {
         builtin fg %"$@"
     fi
 }
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+[[ -f /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
