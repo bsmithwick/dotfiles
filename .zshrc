@@ -93,11 +93,15 @@ export TERM='xterm-256color'
 export COLORTERM='gnome-terminal'
 export EDITOR='vim'
 
-alias vi='vim'
+# use neovim instead of vim
+#alias vi='vim'
+alias vi='nvim'
+alias vim='nvim'
+
 alias svim='vim -u ~/.SpaceVim/vimrc'
 alias gitdiff='git difftool -d'
 alias open='xdg-open'
-alias dwaws='/usr/bin/php ~/src/snaap/scripts/dw-aws.php'
+alias dwaws='docker exec -it snaap php /var/www/app/scripts/dw-aws.php'
 
 # dodge autocorrection
 unsetopt correct_all
