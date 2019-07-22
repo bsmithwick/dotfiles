@@ -1,105 +1,93 @@
 """""""""""""""""""""""""""""""
-" New Stuff
+" New Stuff To Learn
 "  - Space as leader (with hinting)
 "  - choose pane with =
 "  - switch buffers with Tab / Shift+Tab
 "  - :only to focus on one tab
 "  - Ctrl+R for paste buffer list in insert mode
+"  - :! to execute shell command
 "
 """""""""""""""""""""""""""""""
-" Vundle - package management
-" To install: git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-" Install new plugins:  vim +PluginInstall +qall (from shell) or :PluginInstall (inside vim)
-" Update new plugins: :PluginUpdate (inside vim)
+" vim-plug - package management
+" To install: https://github.com/junegunn/vim-plug
+" Install new plugins:  vim +PlugInstall (from shell) or :PlugInstall (inside vim)
+" Update new plugins: :PlugUpdate (inside vim)
 "
-" Required for Vundle
+" Required for plugin mgmt
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+call plug#begin('~/.vim/plugged')
 
-call vundle#begin()
-
-Plugin 'VundleVim/Vundle.vim'                       " Package management
-Plugin 'tpope/vim-sensible'                         " Sensible defaults
-Plugin 'scrooloose/syntastic'                       " Syntax checker
-" Plugin 'wookiehangover/jshint.vim'                " JS syntax checker - temporarily disabled because such stupidness was happening in JS files
-Plugin 'tpope/vim-vinegar'                          " Make netrw better
-"Plugin 'Raimondi/delimitMate'                       " Auto-completion of parens, brackets, etc - I want to love this but I...don't
-Plugin 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
-Plugin 'https://github.com/mhinz/vim-startify.git'  " Fancy start screen
-Plugin 'terryma/vim-multiple-cursors'               " Sublime-style multiple cursors (Ctrl+n)
-Plugin 'benmills/vimux'                             " Send tmux commands from vim
-Plugin 'ryanoasis/vim-devicons'                     " Fancy icons
-Plugin 'JamshedVesuna/vim-markdown-preview'         " Preview markdown files
-Plugin 'chrisbra/csv.vim'                           " Visualize CSVs
-Plugin 'tpope/vim-eunuch'                           " Shell command sugar
-Plugin 'francoiscabrol/ranger.vim'                  " Ranger file browser
-Plugin 'easymotion/vim-easymotion'                  " Navigate words easily (leader-leader-w / leader-leader-b)
-Plugin 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed
-Plugin 'junegunn/vim-peekaboo'                      " See what's in copy registers
-Plugin 'liuchengxu/vim-which-key'                   " Hint leader key commands
-
-Plugin 'Shougo/deoplete.nvim'								 " Code completion
-Plugin 'roxma/nvim-yarp'                            " required for deoplete + vim8
-Plugin 'roxma/vim-hug-neovim-rpc'                   " required for deoplete + vim8
+Plug 'tpope/vim-sensible'                         " Sensible defaults
+Plug 'tpope/vim-vinegar'                          " Make netrw better
+Plug 'tpope/vim-eunuch'                           " Shell command sugar
+Plug 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
+Plug 'mhinz/vim-startify'                         " Fancy start screen
+Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed
+"Plug 'Raimondi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
+Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
+Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
+Plug 'neoclide/coc.nvim', {'branch': 'release'}   " Code completion
 
 " Colors and themes
-Plugin 'flazz/vim-colorschemes'                     " Color schemes
+Plug 'flazz/vim-colorschemes'                     " Color schemes
 
 " Code stuff
-Plugin 'ap/vim-css-color'                           " Preview css colors
-"Plugin 'genoma/vim-less'
-Plugin 'pangloss/vim-javascript'
-"Plugin 'elzr/vim-json'
-"Plugin 'stanangeloff/php.vim'
-Plugin 'janko/vim-test'
+Plug 'w0rp/ale'                                   " Syntax checking, etc
+Plug 'ap/vim-css-color'                           " Preview css colors
+"Plug 'genoma/vim-less'
+Plug 'pangloss/vim-javascript'
+"Plug 'stanangeloff/php.vim'
+Plug 'chrisbra/csv.vim'                           " Visualize CSVs
+Plug 'janko/vim-test'                             " Run test suites
+" Plug 'wookiehangover/jshint.vim'                " JS syntax checker - temporarily disabled because such stupidness was happening in JS files
+Plug 'JamshedVesuna/vim-markdown-preview'         " Preview markdown files
+Plug 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
 
 " Buffer management
-Plugin 'qpkorr/vim-bufkill'                         " Kill buffers without killing their containing windows
-Plugin 't9md/vim-choosewin'
+Plug 'qpkorr/vim-bufkill'                         " Kill buffers without killing their containing windows (:BD)
+Plug 't9md/vim-choosewin'
 
 " FZF and friends
-Plugin 'junegunn/fzf.vim'                           " Better fuzzy finder
-Plugin 'pbogut/fzf-mru.vim'                         " Search MRUs with FZF
+Plug 'junegunn/fzf.vim'                           " Better fuzzy finder
+Plug 'pbogut/fzf-mru.vim'                         " Search MRUs with FZF
 
 " Git stuff
-Plugin 'airblade/vim-gitgutter'                     " Git changes in gutter
-Plugin 'tpope/vim-fugitive'                         " Git awesomeness
+Plug 'airblade/vim-gitgutter'                     " Git changes in gutter
+Plug 'tpope/vim-fugitive'                         " Git awesomeness
 
 " Airline stuff
-Plugin 'vim-airline/vim-airline'                    " Status bar
-Plugin 'vim-airline/vim-airline-themes'             " Status bar themes
+Plug 'vim-airline/vim-airline'                    " Status bar
+Plug 'vim-airline/vim-airline-themes'             " Status bar themes
 
-" Tmux stuff
-Plugin 'edkolev/tmuxline.vim'                       " tmux status line generator
-Plugin 'christoomey/vim-tmux-navigator'             " vim + tmux split hotkeys
-Plugin 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events for vim inside tmux
-
-" I need to get better with these
-Plugin 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
+" Tmux/shell stuff
+Plug 'benmills/vimux'                             " Send tmux commands from vim
+Plug 'edkolev/tmuxline.vim'                       " tmux status line generator
+Plug 'christoomey/vim-tmux-navigator'             " vim + tmux split hotkeys
+Plug 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events for vim inside tmux
+"Plug 'edkolev/promptline.vim'                     " Bash shell prompt
 
 " TODO
-"Plugin 'janko-m/vim-test'                          " Run tests
-"Plugin 'vim-scripts/YankRing.vim'                  " Yank management
-Plugin 'edkolev/promptline.vim'                     " Bash shell prompt
-Plugin 'tpope/vim-surround'                        " Surround text
-"Plugin 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
-"Plugin 'tpope/vim-rsi'                             " Readline key bindings
+"Plug 'vim-scripts/YankRing.vim'                  " Yank management
+"Plug 'tpope/vim-surround'                        " Surround text
+"Plug 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
+"Plug 'tpope/vim-rsi'                             " Readline key bindings
 
-call vundle#end()
+" always load last!
+Plug 'ryanoasis/vim-devicons'                     " Fancy icons
+
+call plug#end()
 
 
 """""""""""""""""""""""""""""""
 " Brian's personal stuff
 set ts=3
 set shiftwidth=3
-set t_Co=256
 set encoding=utf8
 set number                                          " show line numbers
 set hidden                                          " Allow multiple buffers to be edited at once
 set noshowmode                                      " Hide status on the status line
 syntax on                                           " Turn on syntax highlighting
-let php_minlines=5000                               " Prevent vim from forgetting that we're in a php file
 set wildchar=<Tab> wildmenu wildmode=full           " Enable enhanced command-line completion
 
 let mapleader="\<Space>"                            " leader is spacebar
@@ -132,20 +120,17 @@ set foldnestmax=10
 set nofoldenable
 set foldlevel=2
 
+" Share copy/paste with OS
+set clipboard+=unnamedplus
+
 """""""""""""""""""""""""""""""
 " Remappings
 
-" Switch between buffers easily
-map :bs :b#
-
-" Buffer list (s like tmux session list)
-nnoremap <leader>s :ls<cr>
+" Clear search term with Space+Enter
+nnoremap <leader><CR> :nohlsearch<CR>
 
 " Yank list
-nnoremap <leader>r :reg<cr>
-
-" Clear search with space + carriage return
-nnoremap <cr> :noh<cr><cr>
+nnoremap <leader>r :reg<CR>
 
 " Don't put pasted-over text into our copy buffer
 xnoremap <silent> p p:let @"=@0<CR>
@@ -158,7 +143,6 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
-
 
 """""""""""""""""""""""""""""""
 " Plugin-specific
@@ -215,7 +199,6 @@ let g:choosewin_overlay_enable = 1
 
 " vim-test
 nnoremap <leader>t :TestFile<cr>
-
 
 " GitGutter
 set updatetime=250
@@ -289,16 +272,14 @@ let g:fzf_layout = { 'down': '~40%' }               " Bigger search results list
 :nnoremap <Tab> :bnext<CR>
 :nnoremap <S-Tab> :bprevious<CR>
 
-" NERDTree
-"map <C-o> :NERDTreeToggle<CR>
-
-
 """""""""""""""""""""""""""""""
 " FILE-SPECIFIC
 
 " Open Pentaho (PRPT) files with zip.vim
 autocmd BufReadCmd *.prpt call zip#Browse(expand("<amatch>"))
 
+" Prevent vim from forgetting that we're in a php file
+let php_minlines=5000
 
 """""""""""""""""""""""""""""""
 " HARDCORE -- disable arrow keys in insert mode
@@ -310,6 +291,5 @@ noremap <Right> <NOP>
 
 """""""""""""""""""""""""""""""
 " NOTES/TODO:
-" - Ctrl+L to clear search (sensible.vim)
 " - :vsplit #2 to split with buffer 2 in the new pane
 " - * to search for the word containing the cursor
