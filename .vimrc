@@ -2,7 +2,6 @@
 " New Stuff To Learn
 "  - Space as leader (with hinting)
 "  - choose pane with =
-"  - switch buffers with Tab / Shift+Tab
 "  - :only to focus on one tab
 "  - Ctrl+R for paste buffer list in insert mode
 "  - :! to execute shell command
@@ -11,7 +10,8 @@
 " vim-plug - package management
 " To install: https://github.com/junegunn/vim-plug
 " Install new plugins:  vim +PlugInstall (from shell) or :PlugInstall (inside vim)
-" Update new plugins: :PlugUpdate (inside vim)
+" Update new plugins: :PlugUpdate
+" Clean removed plugins: :PlugClean
 "
 " Required for plugin mgmt
 set nocompatible
@@ -21,6 +21,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-sensible'                         " Sensible defaults
 Plug 'tpope/vim-vinegar'                          " Make netrw better
 Plug 'tpope/vim-eunuch'                           " Shell command sugar
+Plug 'tpope/vim-surround'                         " Surround text
+Plug 'tpope/vim-repeat'                           " Repeat surrounds and stuff
 Plug 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
 Plug 'mhinz/vim-startify'                         " Fancy start screen
 Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed
@@ -35,13 +37,8 @@ Plug 'flazz/vim-colorschemes'                     " Color schemes
 " Code stuff
 Plug 'w0rp/ale'                                   " Syntax checking, etc
 Plug 'ap/vim-css-color'                           " Preview css colors
-"Plug 'genoma/vim-less'
 Plug 'pangloss/vim-javascript'
-"Plug 'stanangeloff/php.vim'
 Plug 'chrisbra/csv.vim'                           " Visualize CSVs
-Plug 'janko/vim-test'                             " Run test suites
-" Plug 'wookiehangover/jshint.vim'                " JS syntax checker - temporarily disabled because such stupidness was happening in JS files
-Plug 'JamshedVesuna/vim-markdown-preview'         " Preview markdown files
 Plug 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
 
 " Buffer management
@@ -69,7 +66,6 @@ Plug 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events 
 
 " TODO
 "Plug 'vim-scripts/YankRing.vim'                  " Yank management
-"Plug 'tpope/vim-surround'                        " Surround text
 "Plug 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
 "Plug 'tpope/vim-rsi'                             " Readline key bindings
 
@@ -107,9 +103,7 @@ set splitright
 
 " Color preferences
 set termguicolors
-"colorscheme jellybeans
-"colorscheme srcery
-"colorscheme hybrid
+"colorscheme afterglow
 colorscheme jellyx
 highlight IncSearch ctermbg=Black ctermfg=Yellow
 highlight Search ctermbg=Yellow ctermfg=Black
@@ -124,18 +118,6 @@ set foldlevel=2
 set clipboard+=unnamedplus
 
 """""""""""""""""""""""""""""""
-" Remappings
-
-" Clear search term with Space+Enter
-nnoremap <leader><CR> :nohlsearch<CR>
-
-" Yank list
-nnoremap <leader>r :reg<CR>
-
-" Don't put pasted-over text into our copy buffer
-xnoremap <silent> p p:let @"=@0<CR>
-
-"""""""""""""""""""""""""""""""
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
@@ -145,7 +127,37 @@ autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
 """""""""""""""""""""""""""""""
+" Remappings
+
+" Buffer navigation
+:nnoremap <Tab> :bnext<CR>
+:nnoremap <S-Tab> :bprevious<CR>
+
+" Clear search term with Space+Enter
+nnoremap <leader><CR> :nohlsearch<CR>
+
+" Yank list
+nnoremap <leader>r :reg<CR>
+
+" Show linting details
+
+" source vim config
+nnoremap <leader>s :so ~/.vimrc<cr>
+
+"""""""""""""""""""""""""""""""
 " Plugin-specific
+
+" Which-key (leader hints)
+set timeoutlen=400
+call which_key#register('<Space>', "g:which_key_map")
+nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+let g:which_key_map = {}
+" customize example - see https://github.com/liuchengxu/vim-which-key#example
+let g:which_key_map.a = 'ALE linting details'
+let g:which_key_map.r = 'Registers'
+let g:which_key_map.s = 'Source .vimrc'
+let g:which_key_map['<CR>'] = 'Clear search'
 
 " Sensible.vim
 runtime! plugin/sensible.vim
@@ -154,38 +166,26 @@ set scrolloff=8                                     " Start scrolling when we're
 " Vinegar
 let g:netrw_fastbrowse = 0                          " Don't leave directory buffers hanging around
 
+" ALE
+nnoremap <leader>a :ALEDetail<CR>
+" fix files on save
+let g:ale_fix_on_save = 1
+
+" lint after 1000ms after changes are made both on insert mode and normal mode
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_delay = 1000
+
+" use nice symbols for errors and warnings
+let g:ale_sign_error = '✗\ '
+let g:ale_sign_warning = '⚠\ '
+
+" fixer configurations
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+
 " Fugitive
 set statusline=%{fugitive#statusline()}
-
-" Which-key (leader hints)
-set timeoutlen=500
-let g:which_key_map = {}
-call which_key#register('<Space>', "g:which_key_map")
-nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-vnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
-" customize example @TODO see https://github.com/liuchengxu/vim-which-key#example
-"let g:which_key_map.w = {
-"      \ 'name' : '+windows' ,
-"      \ 'w' : ['<C-W>w'     , 'other-window']          ,
-"      \ 'd' : ['<C-W>c'     , 'delete-window']         ,
-"      \ '-' : ['<C-W>s'     , 'split-window-below']    ,
-"      \ '|' : ['<C-W>v'     , 'split-window-right']    ,
-"      \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
-"      \ 'h' : ['<C-W>h'     , 'window-left']           ,
-"      \ 'j' : ['<C-W>j'     , 'window-below']          ,
-"      \ 'l' : ['<C-W>l'     , 'window-right']          ,
-"      \ 'k' : ['<C-W>k'     , 'window-up']             ,
-"      \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
-"      \ 'J' : ['resize +5'  , 'expand-window-below']   ,
-"      \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
-"      \ 'K' : ['resize -5'  , 'expand-window-up']      ,
-"      \ '=' : ['<C-W>='     , 'balance-window']        ,
-"      \ 's' : ['<C-W>s'     , 'split-window-below']    ,
-"      \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
-"      \ '?' : ['Windows'    , 'fzf-window']            ,
-"      \ }
-"let g:which_key_map.f = { 'name' : '+file' }
-"let g:which_key_map.f.s = ['update', 'save-file']
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
@@ -196,9 +196,6 @@ inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 " invoke with '='
 nmap = <Plug>(choosewin)
 let g:choosewin_overlay_enable = 1
-
-" vim-test
-nnoremap <leader>t :TestFile<cr>
 
 " GitGutter
 set updatetime=250
@@ -214,14 +211,6 @@ let delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 " vim-startify
 let g:startify_custom_header = ''                   " Disable fortune-teller cow
-
-" Syntastic
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 1
-let g:syntastic_enable_highlighting = 0
-let g:syntastic_javascript_checkers = ['eslint']
 
 " Airline
 set laststatus=1
@@ -250,10 +239,6 @@ set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete
 " vim-numbertoggle
 set number relativenumber
 
-" Markdown preview
-let vim_markdown_preview_hotkey='<C-m>'
-let vim_markdown_preview_github=1
-
 " FZF
 " Custom function to search from git root
 function! s:find_git_root()
@@ -267,10 +252,6 @@ nnoremap <C-b> :Buffers<Cr>
 nnoremap <C-g> :BCommits<Cr>
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'               " Use AG by default, so we respect .gitignore etc
 let g:fzf_layout = { 'down': '~40%' }               " Bigger search results list
-
-" Buffer navigation
-:nnoremap <Tab> :bnext<CR>
-:nnoremap <S-Tab> :bprevious<CR>
 
 """""""""""""""""""""""""""""""
 " FILE-SPECIFIC
@@ -287,9 +268,3 @@ noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
-
-
-"""""""""""""""""""""""""""""""
-" NOTES/TODO:
-" - :vsplit #2 to split with buffer 2 in the new pane
-" - * to search for the word containing the cursor

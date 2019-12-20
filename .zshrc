@@ -63,7 +63,20 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(docker git fzf last-working-dir npm tmux z)
+plugins=(
+#	zsh-autosuggestions - more annoying than helpful
+	catimg
+	docker
+	encode64
+	extract
+	fzf
+	last-working-dir
+	npm
+	tmux
+	# git
+	# vi-mode - use this instead of bindkey -v?
+	z
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,10 +97,10 @@ PROMPT="[%n %1~]%# "
 #     git branch 2>/dev/null | awk '/^\*/ { print $2 }'
 # }
 #RPROMPT='$(_git_branch_name)'
-RPROMPT='$(git_prompt_info)'
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*"
+#RPROMPT='$(git_prompt_info)'
+#ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}"
+#ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$reset_color%}"
+#ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*"
 
 export TERM='xterm-256color'
 export COLORTERM='gnome-terminal'
@@ -97,10 +110,13 @@ export EDITOR='vim'
 #alias vi='vim'
 alias vi='nvim'
 alias vim='nvim'
-
 alias svim='vim -u ~/.SpaceVim/vimrc'
+alias spacevim='vim -u ~/.SpaceVim/vimrc'
+
 alias gitdiff='git difftool -d'
 alias open='xdg-open'
+#alias docker='podman' #train thyself to use podman
+#alias dwaws='podman exec -it snaap php /var/www/app/scripts/dw-aws.php'
 alias dwaws='docker exec -it snaap php /var/www/app/scripts/dw-aws.php'
 
 # dodge autocorrection
@@ -140,3 +156,7 @@ fg() {
 # tabtab source for slss package
 # uninstall by removing these lines or running `tabtab uninstall slss`
 [[ -f /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh ]] && . /home/bsmithwick/.nvm/versions/node/v10.15.3/lib/node_modules/serverless/node_modules/tabtab/.completions/slss.zsh
+
+# tabtab source for electron-forge package
+# uninstall by removing these lines or running `tabtab uninstall electron-forge`
+[[ -f /home/bsmithwick/src/computerease-electron/computerease-electron/node_modules/tabtab/.completions/electron-forge.zsh ]] && . /home/bsmithwick/src/computerease-electron/computerease-electron/node_modules/tabtab/.completions/electron-forge.zsh
