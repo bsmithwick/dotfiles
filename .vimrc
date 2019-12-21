@@ -5,6 +5,7 @@
 "  - :only to focus on one tab
 "  - Ctrl+R for paste buffer list in insert mode
 "  - :! to execute shell command
+"  - Ctrl-F in / search mode to see search history
 "
 """""""""""""""""""""""""""""""
 " vim-plug - package management
@@ -23,13 +24,15 @@ Plug 'tpope/vim-vinegar'                          " Make netrw better
 Plug 'tpope/vim-eunuch'                           " Shell command sugar
 Plug 'tpope/vim-surround'                         " Surround text
 Plug 'tpope/vim-repeat'                           " Repeat surrounds and stuff
-Plug 'ConradIrwin/vim-bracketed-paste'            " Make pasting not be horrible
 Plug 'mhinz/vim-startify'                         " Fancy start screen
 Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed
 "Plug 'Raimondi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
 Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
 Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
 Plug 'neoclide/coc.nvim', {'branch': 'release'}   " Code completion
+Plug 'junegunn/vim-slash'                         " Better searching
+Plug 'tpope/vim-repeat'                           " Repeat plugin maps, useful with vim-surround
+Plug 'justinmk/vim-sneak'                         " Search with s<char><char>
 
 " Colors and themes
 Plug 'flazz/vim-colorschemes'                     " Color schemes
@@ -38,12 +41,10 @@ Plug 'flazz/vim-colorschemes'                     " Color schemes
 Plug 'w0rp/ale'                                   " Syntax checking, etc
 Plug 'ap/vim-css-color'                           " Preview css colors
 Plug 'pangloss/vim-javascript'
-Plug 'chrisbra/csv.vim'                           " Visualize CSVs
 Plug 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
 
 " Buffer management
-Plug 'qpkorr/vim-bufkill'                         " Kill buffers without killing their containing windows (:BD)
-Plug 't9md/vim-choosewin'
+Plug 't9md/vim-choosewin'                         " Choose window with '='
 
 " FZF and friends
 Plug 'junegunn/fzf.vim'                           " Better fuzzy finder
@@ -52,6 +53,8 @@ Plug 'pbogut/fzf-mru.vim'                         " Search MRUs with FZF
 " Git stuff
 Plug 'airblade/vim-gitgutter'                     " Git changes in gutter
 Plug 'tpope/vim-fugitive'                         " Git awesomeness
+Plug 'rhysd/git-messenger.vim'                    " Git history in popup - o/O for forward/back
+Plug 'airblade/vim-rooter'                        " Automagically update project root
 
 " Airline stuff
 Plug 'vim-airline/vim-airline'                    " Status bar
@@ -64,16 +67,10 @@ Plug 'christoomey/vim-tmux-navigator'             " vim + tmux split hotkeys
 Plug 'tmux-plugins/vim-tmux-focus-events'         " restore broken focus events for vim inside tmux
 "Plug 'edkolev/promptline.vim'                     " Bash shell prompt
 
-" TODO
-"Plug 'vim-scripts/YankRing.vim'                  " Yank management
-"Plug 'tpope/vim-repeat'                          " Repeat plugin maps, useful with vim-surround
-"Plug 'tpope/vim-rsi'                             " Readline key bindings
-
 " always load last!
 Plug 'ryanoasis/vim-devicons'                     " Fancy icons
 
 call plug#end()
-
 
 """""""""""""""""""""""""""""""
 " Brian's personal stuff
@@ -85,6 +82,7 @@ set hidden                                          " Allow multiple buffers to 
 set noshowmode                                      " Hide status on the status line
 syntax on                                           " Turn on syntax highlighting
 set wildchar=<Tab> wildmenu wildmode=full           " Enable enhanced command-line completion
+set shell=/bin/zsh                                  " Set the shell
 
 let mapleader="\<Space>"                            " leader is spacebar
 
@@ -117,6 +115,10 @@ set foldlevel=2
 " Share copy/paste with OS
 set clipboard+=unnamedplus
 
+" Persistent undo
+set undodir=~/.vim/undodir
+set undofile
+
 """""""""""""""""""""""""""""""
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -130,8 +132,8 @@ autocmd BufWinLeave * call clearmatches()
 " Remappings
 
 " Buffer navigation
-:nnoremap <Tab> :bnext<CR>
-:nnoremap <S-Tab> :bprevious<CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 
 " Clear search term with Space+Enter
 nnoremap <leader><CR> :nohlsearch<CR>
@@ -139,10 +141,13 @@ nnoremap <leader><CR> :nohlsearch<CR>
 " Yank list
 nnoremap <leader>r :reg<CR>
 
-" Show linting details
+nnoremap <leader>w :w<CR>
 
 " source vim config
-nnoremap <leader>s :so ~/.vimrc<cr>
+nnoremap <leader>S :so ~/.vimrc<CR>
+
+" Fire up Ag
+nnoremap <leader>s :Ag<Space>
 
 """""""""""""""""""""""""""""""
 " Plugin-specific
@@ -152,11 +157,19 @@ set timeoutlen=400
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
-let g:which_key_map = {}
 " customize example - see https://github.com/liuchengxu/vim-which-key#example
+let g:which_key_map = {}
+
+let g:which_key_map.p = {'name': '+Plugins'}
+let g:which_key_map.p.i = ['PlugInstall', 'Install']
+let g:which_key_map.p.u = ['PlugUpdate', 'Update']
+let g:which_key_map.p.c = ['PlugClean', 'Clean']
+
 let g:which_key_map.a = 'ALE linting details'
-let g:which_key_map.r = 'Registers'
-let g:which_key_map.s = 'Source .vimrc'
+let g:which_key_map.r = 'List registers'
+let g:which_key_map.s = 'Search'
+let g:which_key_map.S = 'Source .vimrc'
+let g:which_key_map.w = 'Save file'
 let g:which_key_map['<CR>'] = 'Clear search'
 
 " Sensible.vim
@@ -167,7 +180,9 @@ set scrolloff=8                                     " Start scrolling when we're
 let g:netrw_fastbrowse = 0                          " Don't leave directory buffers hanging around
 
 " ALE
+" Show linting details
 nnoremap <leader>a :ALEDetail<CR>
+
 " fix files on save
 let g:ale_fix_on_save = 1
 
@@ -186,6 +201,9 @@ let g:ale_fixers = {
 
 " Fugitive
 set statusline=%{fugitive#statusline()}
+
+" Git Messenger
+let g:git_messenger_always_into_popup = v:true
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
