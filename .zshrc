@@ -65,6 +65,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
 #	zsh-autosuggestions - more annoying than helpful
+	autojump
 	catimg
 	docker
 	encode64
@@ -118,6 +119,9 @@ alias open='xdg-open'
 #alias docker='podman' #train thyself to use podman
 #alias dwaws='podman exec -it snaap php /var/www/app/scripts/dw-aws.php'
 alias dwaws='docker exec -it snaap php /var/www/app/scripts/dw-aws.php'
+
+# use a global ignore file
+alias ag='ag --path-to-ignore ~/.ignore'
 
 # dodge autocorrection
 unsetopt correct_all
