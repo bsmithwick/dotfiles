@@ -4,6 +4,7 @@
 "  - choose pane with =
 "  - :only to focus on one tab
 "  - Ctrl+R for paste buffer list in insert mode
+"  - Ctrl+N for terminal
 "  - :! to execute shell command
 "  - Ctrl-F in / search mode to see search history
 "
@@ -25,20 +26,19 @@ Plug 'tpope/vim-eunuch'                           " Shell command sugar
 Plug 'tpope/vim-surround'                         " Surround text
 Plug 'tpope/vim-repeat'                           " Repeat surrounds and stuff
 Plug 'mhinz/vim-startify'                         " Fancy start screen
-Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed
-"Plug 'Raimondi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
 Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
 Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
 Plug 'neoclide/coc.nvim', {'branch': 'release'}   " Code completion
 Plug 'junegunn/vim-slash'                         " Better searching
-Plug 'tpope/vim-repeat'                           " Repeat plugin maps, useful with vim-surround
 Plug 'justinmk/vim-sneak'                         " Search with s<char><char>
+"Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed - turns out it wasn't all that great
+"Plug 'Raimondi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
 
 " Colors and themes
 Plug 'flazz/vim-colorschemes'                     " Color schemes
 
 " Code stuff
-Plug 'w0rp/ale'                                   " Syntax checking, etc
+Plug 'dense-analysis/ale'                         " Syntax checking, etc
 Plug 'ap/vim-css-color'                           " Preview css colors
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
@@ -55,6 +55,7 @@ Plug 'airblade/vim-gitgutter'                     " Git changes in gutter
 Plug 'tpope/vim-fugitive'                         " Git awesomeness
 Plug 'rhysd/git-messenger.vim'                    " Git history in popup - o/O for forward/back
 Plug 'airblade/vim-rooter'                        " Automagically update project root
+
 
 " Airline stuff
 Plug 'vim-airline/vim-airline'                    " Status bar
@@ -99,19 +100,6 @@ set smartcase                                       " Searches with capital lett
 set splitbelow
 set splitright
 
-" Color preferences
-set termguicolors
-"colorscheme afterglow
-colorscheme jellyx
-highlight IncSearch ctermbg=Black ctermfg=Yellow
-highlight Search ctermbg=Yellow ctermfg=Black
-
-" Code folding
-set foldmethod=indent
-set foldnestmax=10
-set nofoldenable
-set foldlevel=2
-
 " Share copy/paste with OS
 set clipboard+=unnamedplus
 
@@ -119,7 +107,28 @@ set clipboard+=unnamedplus
 set undodir=~/.vim/undodir
 set undofile
 
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+" open terminal on ctrl+n
+function! OpenTerminal()
+  split term://zsh
+  resize 10
+endfunction
+nnoremap <c-n> :call OpenTerminal()<CR>
+
 """""""""""""""""""""""""""""""
+" Color Preferences
+
+"set termguicolors                                  " I don't think this is actually needed for nvim
+"colorscheme afterglow
+colorscheme jellyx
+
+" Improve search highlighting
+highlight IncSearch ctermbg=Black ctermfg=Yellow
+highlight Search ctermbg=Yellow ctermfg=Black
+
 " Highlight extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
@@ -127,6 +136,16 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+"""""""""""""""""""""""""""""""
+" Code folding
+set foldmethod=syntax
+set foldcolumn=2
+set foldnestmax=10
+set foldlevelstart=99                               " start with all folds opened
+highlight Folded ctermbg=8 ctermfg=16               " color names don't work here ?!?!?!?!
+nnoremap <leader>z za<CR>                           " Space-z to toggle folding
+
 
 """""""""""""""""""""""""""""""
 " Remappings
@@ -167,9 +186,11 @@ let g:which_key_map.p.c = ['PlugClean', 'Clean']
 
 let g:which_key_map.a = 'ALE linting details'
 let g:which_key_map.r = 'List registers'
-let g:which_key_map.s = 'Search'
+let g:which_key_map.s = 'Search files with ag'
 let g:which_key_map.S = 'Source .vimrc'
 let g:which_key_map.w = 'Save file'
+let g:which_key_map.z = 'Toggle folding'
+let g:which_key_map.Z = 'Disable/enable folding'
 let g:which_key_map['<CR>'] = 'Clear search'
 
 " Sensible.vim
@@ -252,10 +273,7 @@ map <leader>x :VimuxPromptCommand<CR>
 map <leader>X :VimuxRunLastCommand<CR>
 
 " Devicons
-set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete
-
-" vim-numbertoggle
-set number relativenumber
+set guifont=Source\ Code\ Pro\ for\ Powerline\ Regular
 
 " FZF
 " Custom function to search from git root
