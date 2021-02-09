@@ -3,10 +3,19 @@
 "  - Space as leader (with hinting)
 "  - choose pane with =
 "  - :only to focus on one tab
+"  - s<char><char> (vim-sneak) for search
 "  - Ctrl+R for paste buffer list in insert mode
 "  - Ctrl+N for terminal
 "  - :! to execute shell command
 "  - Ctrl-F in / search mode to see search history
+"
+"
+"""""""""""""""""""""""""""""""
+" HUD tricks
+"  - Ctrl+P = project files
+"  - Ctrl+T = most recently used files
+"  - Ctrl+C = tags
+"  - Ctrl+B = buffers
 "
 """""""""""""""""""""""""""""""
 " vim-plug - package management
@@ -20,28 +29,33 @@ set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
 
+" Colors and themes
 Plug 'tpope/vim-sensible'                         " Sensible defaults
-Plug 'tpope/vim-vinegar'                          " Make netrw better
+" Plug 'tpope/vim-vinegar'                          " Make netrw better - replaced with vim-dirvish
+Plug 'justinmk/vim-dirvish'                       " Replace netrw + vim-vinegar
 Plug 'tpope/vim-eunuch'                           " Shell command sugar
 Plug 'tpope/vim-surround'                         " Surround text
 Plug 'tpope/vim-repeat'                           " Repeat surrounds and stuff
 Plug 'mhinz/vim-startify'                         " Fancy start screen
 Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
 Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
-Plug 'neoclide/coc.nvim', {'branch': 'release'}   " Code completion
 Plug 'junegunn/vim-slash'                         " Better searching
 Plug 'justinmk/vim-sneak'                         " Search with s<char><char>
 "Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed - turns out it wasn't all that great
-"Plug 'Raimondi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
+"Plug 'Raimonvi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
+Plug 'preservim/tagbar'                           " Ctags
 
-" Colors and themes
-Plug 'flazz/vim-colorschemes'                     " Color schemes
-
-" Code stuff
-Plug 'dense-analysis/ale'                         " Syntax checking, etc
+" Code completion etc
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
+"Plug 'dense-analysis/ale'                         " Syntax checking, etc - now we use coc.nvim!
 Plug 'ap/vim-css-color'                           " Preview css colors
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
+Plug 'godlygeek/tabular'                          " Align with :Tab /<whatever>
+
+" Colors and themes
+Plug 'flazz/vim-colorschemes'                     " Color schemes
 
 " Buffer management
 Plug 't9md/vim-choosewin'                         " Choose window with '='
@@ -53,7 +67,7 @@ Plug 'pbogut/fzf-mru.vim'                         " Search MRUs with FZF
 " Git stuff
 Plug 'airblade/vim-gitgutter'                     " Git changes in gutter
 Plug 'tpope/vim-fugitive'                         " Git awesomeness
-Plug 'rhysd/git-messenger.vim'                    " Git history in popup - o/O for forward/back
+" Plug 'rhysd/git-messenger.vim'                    " Git history in popup - o/O for forward/back
 Plug 'airblade/vim-rooter'                        " Automagically update project root
 
 
@@ -120,8 +134,9 @@ nnoremap <c-n> :call OpenTerminal()<CR>
 
 """""""""""""""""""""""""""""""
 " Color Preferences
+set background=dark
 
-"set termguicolors                                  " I don't think this is actually needed for nvim
+set termguicolors                                  " I don't think this is actually needed for nvim
 "colorscheme afterglow
 colorscheme jellyx
 
@@ -139,13 +154,13 @@ autocmd BufWinLeave * call clearmatches()
 
 """""""""""""""""""""""""""""""
 " Code folding
+set nofoldenable                                    " off by default
 set foldmethod=syntax
 set foldcolumn=2
 set foldnestmax=10
 set foldlevelstart=99                               " start with all folds opened
 highlight Folded ctermbg=8 ctermfg=16               " color names don't work here ?!?!?!?!
 nnoremap <leader>z za<CR>                           " Space-z to toggle folding
-
 
 """""""""""""""""""""""""""""""
 " Remappings
@@ -168,6 +183,12 @@ nnoremap <leader>S :so ~/.vimrc<CR>
 " Fire up Ag
 nnoremap <leader>s :Ag<Space>
 
+" Toggle ctags
+nnoremap <leader>c :TagbarToggle<CR>
+
+" Open terminal
+nnoremap <leader>t :call OpenTerminal()<CR>
+
 """""""""""""""""""""""""""""""
 " Plugin-specific
 
@@ -184,10 +205,12 @@ let g:which_key_map.p.i = ['PlugInstall', 'Install']
 let g:which_key_map.p.u = ['PlugUpdate', 'Update']
 let g:which_key_map.p.c = ['PlugClean', 'Clean']
 
-let g:which_key_map.a = 'ALE linting details'
+" let g:which_key_map.a = 'ALE linting details'
+let g:which_key_map.c = 'Show Ctags'
 let g:which_key_map.r = 'List registers'
 let g:which_key_map.s = 'Search files with ag'
 let g:which_key_map.S = 'Source .vimrc'
+let g:which_key_map.t = 'Open terminal'
 let g:which_key_map.w = 'Save file'
 let g:which_key_map.z = 'Toggle folding'
 let g:which_key_map.Z = 'Disable/enable folding'
@@ -201,24 +224,24 @@ set scrolloff=8                                     " Start scrolling when we're
 let g:netrw_fastbrowse = 0                          " Don't leave directory buffers hanging around
 
 " ALE
-" Show linting details
-nnoremap <leader>a :ALEDetail<CR>
-
-" fix files on save
-let g:ale_fix_on_save = 1
-
-" lint after 1000ms after changes are made both on insert mode and normal mode
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_delay = 1000
-
-" use nice symbols for errors and warnings
-let g:ale_sign_error = '✗\ '
-let g:ale_sign_warning = '⚠\ '
-
-" fixer configurations
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\}
+"" Show linting details
+"nnoremap <leader>a :ALEDetail<CR>
+"
+"" fix files on save
+"let g:ale_fix_on_save = 1
+"
+"" lint after 1000ms after changes are made both on insert mode and normal mode
+"let g:ale_lint_on_text_changed = 'always'
+"let g:ale_lint_delay = 1000
+"
+"" use nice symbols for errors and warnings
+"let g:ale_sign_error = '✗\ '
+"let g:ale_sign_warning = '⚠\ '
+"
+"" fixer configurations
+"let g:ale_fixers = {
+"\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+"\}
 
 " Fugitive
 set statusline=%{fugitive#statusline()}
@@ -284,10 +307,47 @@ command! ProjectFiles execute 'Files' s:find_git_root()
 " Replace Ctrl-P with FZF - use 'ProjectFiles' instead of 'Files' to use our custom function above
 nnoremap <C-p> :ProjectFiles<Cr>
 nnoremap <C-t> :FZFMru<Cr>
+nnoremap <C-c> :BTags<Cr>
 nnoremap <C-b> :Buffers<Cr>
 nnoremap <C-g> :BCommits<Cr>
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'               " Use AG by default, so we respect .gitignore etc
-let g:fzf_layout = { 'down': '~40%' }               " Bigger search results list
+"let g:fzf_layout = { 'down': '~40%' }               " Bigger search results list
+
+""" FZF in floating window
+""" https://kassio.github.io/2019/04/10/neovim-fzf-with-a-floating-window.html
+	" Reverse the layout to make the FZF list top-down
+	let $FZF_DEFAULT_OPTS='--layout=reverse'
+
+	" Using the custom window creation function
+	let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
+	" Function to create the custom floating window
+	function! FloatingFZF()
+	  " creates a scratch, unlisted, new, empty, unnamed buffer
+	  " to be used in the floating window
+	  let buf = nvim_create_buf(v:false, v:true)
+
+	  " 90% of the height
+	  let height = float2nr(&lines * 0.9)
+	  " 60% of the height
+	  let width = float2nr(&columns * 0.6)
+	  " horizontal position (centralized)
+	  let horizontal = float2nr((&columns - width) / 2)
+	  " vertical position (one line down of the top)
+	  let vertical = 1
+
+	  let opts = {
+			  \ 'relative': 'editor',
+			  \ 'row': vertical,
+			  \ 'col': horizontal,
+			  \ 'width': width,
+			  \ 'height': height
+			  \ }
+
+	  " open the new window, floating, and enter to it
+	  call nvim_open_win(buf, v:true, opts)
+	endfunction
+"""
 
 """""""""""""""""""""""""""""""
 " FILE-SPECIFIC
