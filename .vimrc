@@ -1,6 +1,11 @@
 """""""""""""""""""""""""""""""
-" New Stuff To Learn
-"  - Space as leader (with hinting)
+" SEARCH USAGE
+" - Ctrl+P : search project files
+" - Ctrl+T : search most recently used files
+" - Ctrl+C : search tags
+" - Ctrl+B : search buffers
+
+" NEW STUFF TO LEARN
 "  - choose pane with =
 "  - :only to focus on one tab
 "  - s<char><char> (vim-sneak) for search
@@ -31,7 +36,6 @@ call plug#begin('~/.vim/plugged')
 
 " Colors and themes
 Plug 'tpope/vim-sensible'                         " Sensible defaults
-" Plug 'tpope/vim-vinegar'                          " Make netrw better - replaced with vim-dirvish
 Plug 'justinmk/vim-dirvish'                       " Replace netrw + vim-vinegar
 Plug 'tpope/vim-eunuch'                           " Shell command sugar
 Plug 'tpope/vim-surround'                         " Surround text
@@ -41,23 +45,22 @@ Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
 Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
 Plug 'junegunn/vim-slash'                         " Better searching
 Plug 'justinmk/vim-sneak'                         " Search with s<char><char>
-"Plug 'jeffkreeftmeijer/vim-numbertoggle'          " Relative numbers when needed - turns out it wasn't all that great
 "Plug 'Raimonvi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
-Plug 'preservim/tagbar'                           " Ctags
+"Plug 'preservim/tagbar'                           " Ctags
 
 " Code completion etc
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}   " Syntax checking, etc - replaces ALE
 " Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
-"Plug 'dense-analysis/ale'                         " Syntax checking, etc - now we use coc.nvim!
 Plug 'ap/vim-css-color'                           " Preview css colors
 Plug 'pangloss/vim-javascript'
 Plug 'tpope/vim-commentary'                       " Type 'gc' to comment a line or block
 Plug 'godlygeek/tabular'                          " Align with :Tab /<whatever>
+Plug 'kevinoid/vim-jsonc'                         " JSON w/ comments syntax checking
 
 " Colors and themes
 Plug 'flazz/vim-colorschemes'                     " Color schemes
 
-" Buffer management
+" Buffer/window management
 Plug 't9md/vim-choosewin'                         " Choose window with '='
 
 " FZF and friends
@@ -139,6 +142,7 @@ set background=dark
 set termguicolors                                  " I don't think this is actually needed for nvim
 "colorscheme afterglow
 colorscheme jellyx
+"colorscheme whitebox  " for white backgrounds
 
 " Improve search highlighting
 highlight IncSearch ctermbg=Black ctermfg=Yellow
@@ -182,6 +186,8 @@ nnoremap <leader>S :so ~/.vimrc<CR>
 
 " Fire up Ag
 nnoremap <leader>s :Ag<Space>
+" Use Ag to search to word under cursor
+nnoremap <silent> <Leader>* :Ag <C-R><C-W><CR>
 
 " Toggle ctags
 nnoremap <leader>c :TagbarToggle<CR>
@@ -209,6 +215,7 @@ let g:which_key_map.p.c = ['PlugClean', 'Clean']
 let g:which_key_map.c = 'Show Ctags'
 let g:which_key_map.r = 'List registers'
 let g:which_key_map.s = 'Search files with ag'
+let g:which_key_map['*'] = 'Search for word under cursor with ag'
 let g:which_key_map.S = 'Source .vimrc'
 let g:which_key_map.t = 'Open terminal'
 let g:which_key_map.w = 'Save file'
@@ -250,9 +257,23 @@ set statusline=%{fugitive#statusline()}
 let g:git_messenger_always_into_popup = v:true
 
 " Deoplete
-let g:deoplete#enable_at_startup = 1
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" let g:deoplete#enable_at_startup = 1
+" inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+
+" Coc.nvim
+" see also ~/.config/nvim/coc-settings.json
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
 
 " Choosewin
 " invoke with '='
