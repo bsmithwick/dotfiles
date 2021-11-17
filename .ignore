@@ -1,2 +1,4 @@
 main.react.js
 main.*.js.map
+vendor.map
+compiled/app.js
