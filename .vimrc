@@ -6,7 +6,6 @@
 " - Ctrl+B : search buffers
 
 " NEW STUFF TO LEARN
-"  - choose pane with =
 "  - :only to focus on one tab
 "  - s<char><char> (vim-sneak) for search
 "  - Ctrl+R for paste buffer list in insert mode
@@ -14,13 +13,6 @@
 "  - :! to execute shell command
 "  - Ctrl-F in / search mode to see search history
 "
-"
-"""""""""""""""""""""""""""""""
-" HUD tricks
-"  - Ctrl+P = project files
-"  - Ctrl+T = most recently used files
-"  - Ctrl+C = tags
-"  - Ctrl+B = buffers
 "
 """""""""""""""""""""""""""""""
 " vim-plug - package management
