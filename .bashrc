@@ -20,7 +20,8 @@ export TERM="xterm-256color"
 export COLORTERM="gnome-terminal"
 
 # Dev scripts
-alias dwaws='/usr/bin/php ~/src/snaap/scripts/dw-aws.php'
+#alias dwaws='/usr/bin/php ~/src/snaap/scripts/dw-aws.php'
+alias dwaws='docker exec -it snaap-app-1 sh -c "php /var/www/html/scripts/dw-aws.php"'
 
 #export ANDROID_HOME=~/Android/Sdk
 

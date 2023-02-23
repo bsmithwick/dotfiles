@@ -85,7 +85,7 @@ PROMPT="[%n %1~]%# "
 #ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}%{$reset_color%}"
 #ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*"
 
-export TERM='xterm-256color'
+#export TERM='xterm-256color'
 export COLORTERM='gnome-terminal'
 export EDITOR='vim'
 
@@ -99,7 +99,7 @@ alias spacevim='vim -u ~/.SpaceVim/vimrc'
 alias gitdiff='git difftool -d'
 alias open='xdg-open'
 #alias docker='podman' #train thyself to use podman
-alias dwaws='php /home/bsmithwick/src/snaap/scripts/dw-aws.php'
+alias dwaws='php74 -d apc.enable_cli=1 /home/bsmithwick/src/snaap/scripts/dw-aws.php'
 
 # use a global ignore file
 alias ag='ag --path-to-ignore ~/.ignore'

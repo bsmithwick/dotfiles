@@ -37,7 +37,6 @@ Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
 Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
 Plug 'junegunn/vim-slash'                         " Better searching
 Plug 'justinmk/vim-sneak'                         " Search with s<char><char>
-"Plug 'Raimonvi/delimitMate'                      " Auto-completion of parens, brackets, etc - I want to love this but I...don't
 "Plug 'preservim/tagbar'                           " Ctags
 
 " Code completion etc
@@ -116,6 +115,9 @@ set clipboard+=unnamedplus
 set undodir=~/.vim/undodir
 set undofile
 
+" Disable mouse
+set mouse=
+
 " turn terminal to normal mode with escape
 tnoremap <Esc> <C-\><C-n>
 " start terminal in insert mode
@@ -187,11 +189,14 @@ nnoremap <leader>c :TagbarToggle<CR>
 " Open terminal
 nnoremap <leader>t :call OpenTerminal()<CR>
 
+" Pretty-format JSON
+nnoremap <leader>j :%!jq .<CR>
+
 """""""""""""""""""""""""""""""
 " Plugin-specific
 
 " Which-key (leader hints)
-set timeoutlen=400
+set timeoutlen=300
 call which_key#register('<Space>', "g:which_key_map")
 nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
 vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
@@ -205,12 +210,13 @@ let g:which_key_map.p.c = ['PlugClean', 'Clean']
 
 " let g:which_key_map.a = 'ALE linting details'
 let g:which_key_map.c = 'Show Ctags'
+let g:which_key_map.j = 'Prettify JSON'
 let g:which_key_map.r = 'List registers'
 let g:which_key_map.s = 'Search files with ag'
 let g:which_key_map['*'] = 'Search for word under cursor with ag'
 let g:which_key_map.S = 'Source .vimrc'
 let g:which_key_map.t = 'Open terminal'
-let g:which_key_map.w = 'Save file'
+" let g:which_key_map.w = 'Save file'
 let g:which_key_map.z = 'Toggle folding'
 let g:which_key_map.Z = 'Disable/enable folding'
 let g:which_key_map['<CR>'] = 'Clear search'
@@ -248,23 +254,15 @@ set statusline=%{fugitive#statusline()}
 " Git Messenger
 let g:git_messenger_always_into_popup = v:true
 
-" Deoplete
-" let g:deoplete#enable_at_startup = 1
-" inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-" inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
-
 " Coc.nvim
 " see also ~/.config/nvim/coc-settings.json
-" use <tab> for trigger completion and navigate to the next complete item
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
-endfunction
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
+
+" Accept first result with tab
+inoremap <expr> <Tab> coc#pum#visible() ? coc#pum#confirm() : "\<Tab>"
 
 
 " Choosewin
@@ -280,9 +278,6 @@ highlight GitGutterAdd ctermfg=green guifg=darkgreen
 highlight GitGutterChange ctermfg=yellow guifg=darkyellow
 highlight GitGutterDelete ctermfg=red guifg=darkred
 highlight GitGutterChangeDelete ctermfg=yellow guifg=darkyellow
-
-" DelimitMate
-let delimitMate_matchpairs = "(:),[:],{:},<:>"
 
 " vim-startify
 let g:startify_custom_header = ''                   " Disable fortune-teller cow
