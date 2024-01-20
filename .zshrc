@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/bsmithwick/.oh-my-zsh"
+  export ZSH="/Users/bsmithwick/.oh-my-zsh"
 
 # Set name of the theme to load
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -38,6 +38,12 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 ###
 # zsh-nvm
 export NVM_LAZY_LOAD=true
+# make sure nvm is booted before vim
+nvim () {
+    unset -f nvim
+    _zsh_nvm_load
+    nvim "$@"
+}
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -47,7 +53,6 @@ export NVM_LAZY_LOAD=true
 plugins=(
 #	zsh-autosuggestions - more annoying than helpful
 	autojump
-	catimg
 	docker
 	encode64
 	extract
@@ -56,6 +61,7 @@ plugins=(
 	npm
 	tmux
 	zsh-nvm
+	asdf
 	# git
 	# vi-mode - use this instead of bindkey -v?
 	z
@@ -69,8 +75,15 @@ bindkey -v
 # Restore ctrl-r fzf history search after enabling vim mode
 bindkey "^R" fzf-history-widget
 
+# don't show history from other tabs
+unsetopt inc_append_history
+unsetopt share_history
+
 # Git completion
 zstyle ':completion:*:*:git:*' script ~/.git-completion.zsh
+zstyle ':completion:*:*:docker:*' option-stacking yes
+zstyle ':completion:*:*:docker-*:*' option-stacking yes
+
 
 # PROMPT
 #PROMPT="[%n %1~]» "
@@ -86,20 +99,21 @@ PROMPT="[%n %1~]%# "
 #ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*"
 
 #export TERM='xterm-256color'
-export COLORTERM='gnome-terminal'
+#export COLORTERM='gnome-terminal'
 export EDITOR='vim'
 
 # use neovim instead of vim
 #alias vi='vim'
 alias vi='nvim'
 alias vim='nvim'
-alias svim='vim -u ~/.SpaceVim/vimrc'
-alias spacevim='vim -u ~/.SpaceVim/vimrc'
+alias lazy='nvim -u ~/.config/nvim/lazy.lua'
 
-alias gitdiff='git difftool -d'
-alias open='xdg-open'
+#alias gitdiff='git difftool -d' # for meld
+alias gitdiff='git difftool -d --no-symlinks' # for diffmerge
+#alias open='xdg-open'
 #alias docker='podman' #train thyself to use podman
-alias dwaws='php74 -d apc.enable_cli=1 /home/bsmithwick/src/snaap/scripts/dw-aws.php'
+#alias dwaws='php74 -d apc.enable_cli=1 /home/bsmithwick/src/snaap/scripts/dw-aws.php'
+alias dwaws='php -d apc.enable_cli=1 ~bsmithwick/src/snaap/scripts/dw-aws.php'
 
 # use a global ignore file
 alias ag='ag --path-to-ignore ~/.ignore'
@@ -116,9 +130,6 @@ setopt correct
 
 path+=/home/bsmithwick/.local/bin
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
 # Custom Functions
 # fg 1, not fg %1
 fg() {
@@ -128,3 +139,18 @@ fg() {
         builtin fg %"$@"
     fi
 }
+
+export NODE_PATH="$(npm config get prefix)/lib/node_modules:$NODE_PATH"
+
+## Google Cloud stuff
+export GOOGLE_APPLICATION_CREDENTIALS="~/.dbt/bs-gcp-key.json"
+export DBT_PROFILES_DIR="/Users/bsmithwick/src/dbt/.dbt/"
+
+export PATH="/Users/bsmithwick/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/bsmithwick/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
+export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"

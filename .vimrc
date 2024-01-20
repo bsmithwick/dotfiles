@@ -26,7 +26,7 @@ set nocompatible
 filetype off
 call plug#begin('~/.vim/plugged')
 
-" Colors and themes
+" General stuff
 Plug 'tpope/vim-sensible'                         " Sensible defaults
 Plug 'justinmk/vim-dirvish'                       " Replace netrw + vim-vinegar
 Plug 'tpope/vim-eunuch'                           " Shell command sugar
@@ -37,7 +37,9 @@ Plug 'junegunn/vim-peekaboo'                      " See what's in copy registers
 Plug 'liuchengxu/vim-which-key'                   " Hint leader key commands
 Plug 'junegunn/vim-slash'                         " Better searching
 Plug 'justinmk/vim-sneak'                         " Search with s<char><char>
-"Plug 'preservim/tagbar'                           " Ctags
+Plug 'preservim/tagbar'                           " Ctags
+Plug 'github/copilot.vim'                         " Github copilot
+Plug 'vim-scripts/bufkill.vim'						  " Kill buffers
 
 " Code completion etc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}   " Syntax checking, etc - replaces ALE
@@ -129,6 +131,9 @@ function! OpenTerminal()
 endfunction
 nnoremap <c-n> :call OpenTerminal()<CR>
 
+" disable automatically continuing comments onto subsequent lines
+autocmd BufNewFile,BufRead * setlocal formatoptions-=cro
+
 """""""""""""""""""""""""""""""
 " Color Preferences
 set background=dark
@@ -149,6 +154,9 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+" Highlight yanked text
+au TextYankPost * silent! lua vim.highlight.on_yank()
 
 """""""""""""""""""""""""""""""
 " Code folding
@@ -208,7 +216,6 @@ let g:which_key_map.p.i = ['PlugInstall', 'Install']
 let g:which_key_map.p.u = ['PlugUpdate', 'Update']
 let g:which_key_map.p.c = ['PlugClean', 'Clean']
 
-" let g:which_key_map.a = 'ALE linting details'
 let g:which_key_map.c = 'Show Ctags'
 let g:which_key_map.j = 'Prettify JSON'
 let g:which_key_map.r = 'List registers'
@@ -228,26 +235,6 @@ set scrolloff=8                                     " Start scrolling when we're
 " Vinegar
 let g:netrw_fastbrowse = 0                          " Don't leave directory buffers hanging around
 
-" ALE
-"" Show linting details
-"nnoremap <leader>a :ALEDetail<CR>
-"
-"" fix files on save
-"let g:ale_fix_on_save = 1
-"
-"" lint after 1000ms after changes are made both on insert mode and normal mode
-"let g:ale_lint_on_text_changed = 'always'
-"let g:ale_lint_delay = 1000
-"
-"" use nice symbols for errors and warnings
-"let g:ale_sign_error = '✗\ '
-"let g:ale_sign_warning = '⚠\ '
-"
-"" fixer configurations
-"let g:ale_fixers = {
-"\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-"\}
-
 " Fugitive
 set statusline=%{fugitive#statusline()}
 
@@ -255,6 +242,7 @@ set statusline=%{fugitive#statusline()}
 let g:git_messenger_always_into_popup = v:true
 
 " Coc.nvim
+" let g:coc_node_path = trim(system('which node'))
 " see also ~/.config/nvim/coc-settings.json
 
 " Always show the signcolumn, otherwise it would shift the text each time
@@ -308,6 +296,7 @@ set guifont=Source\ Code\ Pro\ for\ Powerline\ Regular
 
 " FZF
 " Custom function to search from git root
+set rtp+=/opt/homebrew/opt/fzf
 function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
