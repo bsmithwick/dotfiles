@@ -12,12 +12,13 @@ vim.opt.termguicolors = true
 vim.opt.ts = 3
 vim.opt.shiftwidth = 3
 vim.opt.encoding = "utf8"
-vim.opt.compatible = false
 vim.opt.termguicolors = true
+
+vim.opt.compatible = false						-- don't be compatible with vi
 vim.opt.number = true 							-- show line number
 
-vim.opt.shell = "/bin/zsh" 					-- enable mouse @TODO fix this
-vim.opt.mouse = "a"
+vim.opt.shell = "/bin/zsh"
+vim.opt.mouse = "a"								-- enable mouse
 vim.opt.clipboard:append("unnamedplus")	-- share copy/paste with OS
 vim.opt.hidden = true 							-- allow multiple buffers to be edited at once
 
@@ -36,7 +37,7 @@ vim.opt.splitright = true
 
 -- persistent undo
 vim.opt.undofile = true
-vim.opt.undodir = "~/.vim/undodir"
+vim.opt.undodir = vim.fn.expand("~/.vim/undodir")
 
 -- enhanced command-line completion
 vim.opt.wildchar = ("\t"):byte()
@@ -44,9 +45,9 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "full"
 
 -- code folding
-vim.opt.foldenable = false
-vim.opt.foldmethod = "syntax"
-vim.opt.foldcolumn = "2"
+vim.opt.foldenable = true
+vim.opt.foldmethod = "indent"
+vim.opt.foldcolumn = "3"
 vim.opt.foldnestmax = 10
 vim.opt.foldlevelstart = 99
 
@@ -75,9 +76,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	-- general stuff
-	"mhinz/vim-startify",
-	"gbprod/cutlass.nvim",
-	"github/copilot.vim",
+	"mhinz/vim-startify",       -- start page
+	"gbprod/cutlass.nvim",      -- cut/delete
+	"github/copilot.vim",       -- github copilot
 
 	{
 		"kylechui/nvim-surround",
@@ -87,7 +88,7 @@ require("lazy").setup({
 	},
 
 	-- @TODO learn how to use this
-	{ "lewis6991/gitsigns.nvim", init = function() require('gitsigns').setup() end },
+	 { "lewis6991/gitsigns.nvim", init = function() require('gitsigns').setup() end },
 
 	-- remove unused buffers
 	{ "echasnovski/mini.nvim", init = function() require('mini.bufremove').setup() end },
@@ -114,8 +115,12 @@ require("lazy").setup({
 		"stevearc/oil.nvim",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		init = function()
-			require("oil").setup()
-			vim.keymap.set("n", "-", "<CMD>Oil<CR>", { silent = true, desc = "Open parent directory" })
+			require("oil").setup({
+				view_options = {
+					show_hidden = true,
+				},
+			})
+			vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { silent = true, desc = "Open parent directory" })
 		end
 	},
 
@@ -193,9 +198,9 @@ require("lazy").setup({
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		init = function()
 			require("lualine").setup({
-				options = {
-					theme = "tokyonight",
-				},
+				-- options = {
+				-- 	theme = "jellyx",
+				-- },
 			})
 		end
 	},
@@ -227,31 +232,12 @@ require("lazy").setup({
 		}
 	},
 
-	-- @TODO FIX THIS
-	"yorickpeterse/nvim-window",
-	-- {
-	-- "s1n7ax/nvim-window-picker",
-	-- 	version = "1.*",
-	-- 	config = function()
-	-- 		require("window-picker").setup({
-	-- 			autoselect_one = true,
-	-- 			include_current = false,
-	-- 			filter_rules = {
-	-- 			-- filter using buffer options
-	-- 				bo = {
-	-- 					-- if the file type is one of following, the window will be ignored
-	-- 					filetype = { "neo-tree", "neo-tree-popup", "notify", "quickfix" },
-	--
-	-- 					-- if the buffer type is one of following, the window will be ignored
-	-- 					buftype = { "terminal" },
-	-- 				},
-	-- 			},
-	-- 			other_win_hl_color = "#e35e4f",
-	-- 		})
-	-- 	end,
-	-- },
+	-- window picker
+	-- regular vimscript since there's no good lua alternative :(
+	"t9md/vim-choosewin",
 
 	-- LSP
+	-- @TODO review/clean this
 	{
 		"williamboman/mason.nvim",
 		lazy = false,
@@ -304,8 +290,8 @@ require("lazy").setup({
 
 			-- JavaScript/Typescript
 			lspconfig.tsserver.setup({
-			  capabilities = caps,
-			  on_attach = no_format
+				capabilities = caps,
+				on_attach = no_format
 			})
 		end
 	},
@@ -313,26 +299,21 @@ require("lazy").setup({
 	------------
 	-- THEMES
 	------------
-	-- default
-	{ "folke/tokyonight.nvim", lazy = false, priority = 1000, init = function()
-		vim.cmd.colorscheme "tokyonight-night"
-	end },
-	-- everything else
-	{ "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
-	{ "HoNamDuong/hybrid.nvim", lazy = false, priority = 1000 },
-	{ "vim-scripts/JellyX", lazy = false, priority = 1000 }, -- vimscript :(
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-	{ "Mofiqul/vscode.nvim", lazy = false, priority = 1000,
-	--config = function() require("vscode").load() end
-	},
+	{ "flazz/vim-colorschemes", lazy = false, priority = 1000 },  -- vimscript :(
+	-- { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
+	-- { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+	-- { "HoNamDuong/hybrid.nvim", lazy = false, priority = 1000 },
+	-- { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+	-- { "Mofiqul/vscode.nvim", lazy = false, priority = 1000, config = function() require("vscode").load() end },
 })
---vim.cmd.colorscheme "vscode"
--- vim.cmd.colorscheme "catppuccin-mocha"
--- vim.cmd.colorscheme "kanagawa-wave"
+vim.cmd.colorscheme "jellyx"
+
+------------
 
 -- Autocommands
 local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
+
 -- Highlight on yank
 augroup("YankHighlight", { clear = true })
 autocmd("TextYankPost", {
@@ -387,6 +368,12 @@ vim.keymap.set("n", "<Right>", ":vertical resize -2<CR>", { silent = true})
 -- startify
 vim.g.startify_custom_header = ''
 
+--- choosewin (window picker)
+vim.keymap.set("n", "=", ":ChooseWin<CR>", { silent = true })
+vim.g.choosewin_overlay_enable = 1
+vim.g.choosewin_statusline_replace = 0
+vim.g.choosewin_tabline_replace = 0
+
 -- telescope
 require('telescope').load_extension('fzf')
 
@@ -394,24 +381,6 @@ local telescope = require("telescope.builtin")
 --
 -- search in project if inside git repo, otherwise search in current directory
 --
-
--- We cache the results of "git rev-parse" to reduce latency
--- local is_inside_work_tree = {}
---
--- local project_files = function()
---   local cwd = vim.fn.getcwd()
---   if is_inside_work_tree[cwd] == nil then
---     vim.fn.system("git rev-parse --is-inside-work-tree")
---     is_inside_work_tree[cwd] = vim.v.shell_error == 0
---   end
---
---   if is_inside_work_tree[cwd] then
---     telescope.git_files()
---   else
---     telescope.find_files()
---   end
--- end
-
 function project_files()
   local function is_git_repo()
     vim.fn.system("git rev-parse --is-inside-work-tree")
@@ -442,8 +411,6 @@ vim.keymap.set("n", "<leader>p", project_files, { desc = "Project files" })
 -- vim.keymap.set("n", "<leader>t", telescope.treesitter, { desc = "Treesitter search" })
 -- vim.keymap.set('n', '<leader>fh', telescope.help_tags, { desc = "Help tags" })
 
--- window-picker
-vim.keymap.set("n", "=", ":lua require('nvim-window').pick()<CR>", { silent = true })
 
 -- @TODO fix this
 -- example mappings you can place in some other place
