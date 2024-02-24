@@ -111,6 +111,9 @@ alias lazy='nvim -u ~/.config/nvim/lazy.lua'
 #alias gitdiff='git difftool -d' # for meld
 alias gitdiff='git difftool -d --no-symlinks' # for diffmerge
 #alias open='xdg-open'
+
+# DOCKER
+export DOCKER_HOST="unix://$HOME/.colima/docker.sock" # colima
 #alias docker='podman' #train thyself to use podman
 #alias dwaws='php74 -d apc.enable_cli=1 /home/bsmithwick/src/snaap/scripts/dw-aws.php'
 alias dwaws='php -d apc.enable_cli=1 ~bsmithwick/src/snaap/scripts/dw-aws.php'
