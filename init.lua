@@ -45,11 +45,11 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "full"
 
 -- code folding
-vim.opt.foldenable = true
-vim.opt.foldmethod = "indent"
-vim.opt.foldcolumn = "3"
-vim.opt.foldnestmax = 10
-vim.opt.foldlevelstart = 99
+-- vim.opt.foldenable = true
+-- vim.opt.foldmethod = "indent"
+-- vim.opt.foldcolumn = "3"
+-- vim.opt.foldnestmax = 10
+-- vim.opt.foldlevelstart = 99
 
 -- disable providers
 vim.g.loaded_ruby_provider = 0
@@ -124,13 +124,26 @@ require("lazy").setup({
 		end
 	},
 
-	-- buffer status line
+	-- buffer status line @TODO clean this up
 	{
 		"akinsho/bufferline.nvim",
 		dependencies = "nvim-tree/nvim-web-devicons",
 		init = function()
 			require("bufferline").setup({
-				options = { }
+				highlights = {
+					fill = {
+						bg = {
+							attribute = "bg",
+							highlight = "Pmenu"
+						}
+					}
+				},
+				options = {
+					separator_style = "padded_slant",
+					indicator = {
+						style = "icon",
+					},
+				}
 			})
 		end
 	},
@@ -299,7 +312,8 @@ require("lazy").setup({
 	------------
 	-- THEMES
 	------------
-	{ "flazz/vim-colorschemes", lazy = false, priority = 1000 },  -- vimscript :(
+	{ "guns/jellyx.vim", lazy = false, priority = 1000 },
+	-- { "flazz/vim-colorschemes", lazy = false, priority = 1000 },  -- vimscript :(
 	-- { "folke/tokyonight.nvim", lazy = false, priority = 1000 },
 	-- { "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
 	-- { "HoNamDuong/hybrid.nvim", lazy = false, priority = 1000 },
