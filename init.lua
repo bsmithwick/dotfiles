@@ -1,6 +1,6 @@
 -- GOOD TRICKS!
 -- select block, then '=' to indent
--- 's' to sneak
+-- 's' to sneak (leap.nvim)
 -- 'zz' to recenter page on cursor
 
 ------------
@@ -88,7 +88,15 @@ require("lazy").setup({
 	},
 
 	-- @TODO learn how to use this
-	 { "lewis6991/gitsigns.nvim", init = function() require('gitsigns').setup() end },
+	{ "lewis6991/gitsigns.nvim", init = function() require('gitsigns').setup() end },
+
+	-- git blame
+	{
+		"FabijanZulj/blame.nvim",
+		config = function()
+			require("blame").setup()
+		end
+	},
 
 	-- remove unused buffers
 	{ "echasnovski/mini.nvim", init = function() require('mini.bufremove').setup() end },
@@ -96,8 +104,8 @@ require("lazy").setup({
 	-- block comments
 	{ "numToStr/Comment.nvim", lazy = false, init = function() require('Comment').setup() end },
 
-	-- leap with 's'
-	{ "ggandor/leap.nvim", init = function() require("leap").create_default_mappings()  end },
+	-- leap (sneak) with 's'
+	{ "ggandor/leap.nvim", config = function() require("leap").create_default_mappings()  end },
 
 	-- leader + wait = keybinding reminders
 	{
@@ -120,7 +128,6 @@ require("lazy").setup({
 					show_hidden = true,
 				},
 			})
-			vim.keymap.set("n", "-", "<CMD>Oil --float<CR>", { silent = true, desc = "Open parent directory" })
 		end
 	},
 
@@ -149,32 +156,32 @@ require("lazy").setup({
 	},
 
 	-- treesitter
-	{
-		"nvim-treesitter/nvim-treesitter",
-		init = function()
-			require("nvim-treesitter.configs").setup({
-				-- required
-				ensure_installed = {
-					"c",
-					"lua",
-					"vim",
-					"vimdoc",
-					"query",
-					"javascript",
-					"json",
-					"php",
-					"html",
-					"regex",
-					"sql",
-					"yaml",
-					"markdown",
-				 },
-				highlight = { enable = true },
-				indent = { enable = true },
-			})
-		end
-	},
-
+	-- {
+	-- 	"nvim-treesitter/nvim-treesitter",
+	-- 	init = function()
+	-- 		require("nvim-treesitter.configs").setup({
+	-- 			-- required
+	-- 			ensure_installed = {
+	-- 				"c",
+	-- 				"lua",
+	-- 				"vim",
+	-- 				"vimdoc",
+	-- 				"query",
+	-- 				"javascript",
+	-- 				"json",
+	-- 				"php",
+	-- 				"html",
+	-- 				"regex",
+	-- 				"sql",
+	-- 				"yaml",
+	-- 				"markdown",
+	-- 			 },
+	-- 			highlight = { enable = true },
+	-- 			indent = { enable = true },
+	-- 		})
+	-- 	end
+	-- },
+	--
 	-- telescope - replacement for FZF, etc
 	{
 		"nvim-telescope/telescope.nvim",
@@ -196,7 +203,6 @@ require("lazy").setup({
 					},
 				}
 			})
-			require("telescope").load_extension("notify")
 		end
 	},
 	{
@@ -218,17 +224,21 @@ require("lazy").setup({
 		end
 	},
 
-	{
-		"rcarriga/nvim-notify",
-		config = function()
-			require("notify").setup({
-				stages = "fade_in_slide_out",
-				timeout = 2000, -- @TODO
-				render = "compact",
-			})
-			vim.notify = require("notify")
-		end
-	},
+	-- fancy notifications are annoying!
+	-- {
+	-- 	"rcarriga/nvim-notify",
+	-- 	config = function()
+	-- 		require("notify").setup({
+	-- 			stages = "fade_in_slide_out",
+	-- 			timeout = 2000, -- @TODO
+	-- 			render = "compact",
+	-- 			-- don't put focus into the message (so Ctrl+W works)
+	-- 			on_open = function(win)
+	-- 				vim.api.nvim_win_set_config(win, { focusable = false })
+	-- 			end,
+	-- 		})
+	-- 	end
+	-- },
 
 	--  nice command line
 	-- @TODO figure out how to configure this
@@ -240,7 +250,6 @@ require("lazy").setup({
 		},
 		dependencies = {
 			"MunifTanjim/nui.nvim",
-			"rcarriga/nvim-notify", -- top right notification window - annoying
 			"nvim-treesitter/nvim-treesitter"
 		}
 	},
@@ -298,11 +307,11 @@ require("lazy").setup({
 			  on_attach = no_format
 			})
 
-			-- PHP
-			lspconfig.phpactor.setup({ capabilities = caps })
+			-- PHP - disabled because this is annoying as hell
+			-- lspconfig.phpactor.setup({ capabilities = caps })
 
 			-- JavaScript/Typescript
-			lspconfig.tsserver.setup({
+			lspconfig.ts_ls.setup({
 				capabilities = caps,
 				on_attach = no_format
 			})
@@ -338,10 +347,10 @@ autocmd("TextYankPost", {
 })
 
 -- Remove whitespace on save
-autocmd("BufWritePre", {
-  pattern = "",
-  command = ":%s/\\s\\+$//e"
-})
+-- autocmd("BufWritePre", {
+--   pattern = "",
+--   command = ":%s/\\s\\+$//e"
+-- })
 
 -- Don't auto comment new lines
 autocmd("BufEnter", {
@@ -382,11 +391,20 @@ vim.keymap.set("n", "<Right>", ":vertical resize -2<CR>", { silent = true})
 -- startify
 vim.g.startify_custom_header = ''
 
+-- oil (vim-vinegar replacement)
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { silent = true, desc = "Open parent directory" })
+
 --- choosewin (window picker)
-vim.keymap.set("n", "=", ":ChooseWin<CR>", { silent = true })
+vim.keymap.set("n", "=", ":ChooseWin<CR>", { silent = true, desc = "Choose window" })
 vim.g.choosewin_overlay_enable = 1
 vim.g.choosewin_statusline_replace = 0
 vim.g.choosewin_tabline_replace = 0
+
+-- blame - use :Gitblame to toggle blame since I always forget "BlameToggle"
+vim.api.nvim_create_user_command('Gitblame',function()
+	pcall(vim.cmd("BlameToggle"))
+end,{})
+
 
 -- telescope
 require('telescope').load_extension('fzf')
@@ -415,7 +433,7 @@ end
 
 vim.keymap.set("n", "<leader>f", telescope.find_files, { desc = "Files" })
 vim.keymap.set("n", "<leader>b", telescope.buffers, { desc = "Buffers" })
-vim.keymap.set("n", "<leader>g", telescope.live_grep, { desc = "Grep files" })
+vim.keymap.set("n", "<leader>g", telescope.live_grep, { desc = "Grep project files" })
 vim.keymap.set("n", "<leader>r", telescope.registers, { desc = "Yank registers" })
 vim.keymap.set("n", "<leader>s", telescope.current_buffer_fuzzy_find, { desc = "Current buffer" })
 vim.keymap.set("n", "<leader>c", telescope.command_history, { desc = "Command history" })

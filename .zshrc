@@ -74,6 +74,9 @@ source $ZSH/oh-my-zsh.sh
 bindkey -v
 # Restore ctrl-r fzf history search after enabling vim mode
 bindkey "^R" fzf-history-widget
+#  zsh codex - openai
+bindkey '^X' create_completion
+
 
 # don't show history from other tabs
 unsetopt inc_append_history
@@ -116,10 +119,14 @@ alias gitdiff='git difftool -d --no-symlinks' # for diffmerge
 export DOCKER_HOST="unix://$HOME/.colima/docker.sock" # colima
 #alias docker='podman' #train thyself to use podman
 #alias dwaws='php74 -d apc.enable_cli=1 /home/bsmithwick/src/snaap/scripts/dw-aws.php'
-alias dwaws='php -d apc.enable_cli=1 ~bsmithwick/src/snaap/scripts/dw-aws.php'
+#alias dwaws='php -d apc.enable_cli=1 ~bsmithwick/src/snaap/scripts/dw-aws.php'
+alias dwaws='echo "dwaws is deprecated. Use qa-aws.php instead."'
 
 # use a global ignore file
 alias ag='ag --path-to-ignore ~/.ignore'
+
+# easy file backups
+alias bf='function _backup_file() { cp "$1" "$1.bak.$(date +%Y%m%d%H%M)"; }; _backup_file'
 
 # dodge autocorrection
 unsetopt correct_all
@@ -157,3 +164,24 @@ export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export PATH="/opt/homebrew/opt/sqlite/bin:$PATH"
+export PATH="/Users/bsmithwick/fvm/default/bin:$PATH"
+
+# Shell-GPT integration ZSH v0.2
+_sgpt_zsh() {
+if [[ -n "$BUFFER" ]]; then
+    _sgpt_prev_cmd=$BUFFER
+    BUFFER+="⌛"
+    zle -I && zle redisplay
+    BUFFER=$(sgpt --shell <<< "$_sgpt_prev_cmd" --no-interaction)
+    zle end-of-line
+fi
+}
+zle -N _sgpt_zsh
+bindkey ^l _sgpt_zsh
+# Shell-GPT integration ZSH v0.2
+
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/bsmithwick/.dart-cli-completion/zsh-config.zsh ]] && . /Users/bsmithwick/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
